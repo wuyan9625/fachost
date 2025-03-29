@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <title>購物車 - Fachost</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <script src="assets/js/app.js" defer></script>
+  <script src="assets/js/cart.js" defer></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">Fachost</div>
+    <ul class="nav-links">
+      <li><a href="index.html">首頁</a></li>
+      <li><a href="plans.html">方案</a></li>
+      <li><a href="dashboard.html">控制台</a></li>
+      <li><a href="#" id="login-btn">登入</a></li>
+      <li><a href="#" id="lang-toggle">EN</a></li>
+    </ul>
+  </nav>
+
+  <main class="cart">
+    <h1>我的購物車</h1>
+    <div id="cart-items">
+      <!-- 購物車項目將由 JS 載入 -->
+    </div>
+    <div class="cart-summary">
+      <p>總金額：<span id="total-price">NT$0</span></p>
+      <button class="btn-primary" id="checkout-btn">前往結帳</button>
+    </div>
+  </main>
+
+  <footer>
+    <p>聯絡我們：<a href="mailto:wuyan9625@gmail.com">wuyan9625@gmail.com</a> |
+      <a href="https://t.me/你的社群連結" target="_blank">Telegram 社群</a></p>
+    <p>&copy; 2024 Fachost. All rights reserved.</p>
+  </footer>
+</body>
+</html>
