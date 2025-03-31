@@ -6,16 +6,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const samplePlans = {
     tw: [
-      { name: "1U 1G - 台灣線路1", price: 160, id: "tw-1u1g" },
-      { name: "2U 2G - 台灣線路2", price: 280, id: "tw-2u2g" }
+      {
+        name: "1U 1G - 500M-Hinet線路1",
+        id: "tw-1u1g",
+        sold: 36,
+        price: { monthly: 170, quarterly: 490, yearly: 1900 }
+      },
+      {
+        name: "1U 2G - 500M-Hinet線路1",
+        id: "tw-1u2g",
+        sold: 20,
+        price: { monthly: 160, quarterly: 460, yearly: 1780 }
+      }
     ],
     hk: [
-      { name: "1U 1G - 香港節點", price: 150, id: "hk-1u1g" },
-      { name: "2U 4G - 香港高速", price: 320, id: "hk-2u4g" }
+      {
+        name: "香港節點 - 開發中",
+        id: "hk-dev",
+        status: "developing"
+      }
     ],
     us: [
-      { name: "1U 1G - 美西", price: 140, id: "us-1u1g" },
-      { name: "2U 2G - 美東", price: 270, id: "us-2u2g" }
+      {
+        name: "香港節點 - 開發中",
+        id: "hk-dev",
+        status: "developing"
+      }
     ]
   };
 
@@ -30,14 +46,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderPlans(region) {
     plansContainer.innerHTML = "";
+  
     samplePlans[region].forEach((plan) => {
       const card = document.createElement("div");
       card.className = "plan-card";
-      card.innerHTML = `
-        <h3>${plan.name}</h3>
-        <p>NT$${plan.price} / 月</p>
-        <button class="btn-primary" onclick="addToCart('${plan.id}')">加入購物車</button>
-      `;
+  
+      // 開發中處理
+      if (plan.status === "developing") {
+        card.innerHTML = `
+          <h3>${plan.name}</h3>
+          <p style="color:gray;">此地區尚未開放，請稍後再試。</p>
+        `;
+      } else {
+        card.innerHTML = `
+          <h3>${plan.name}</h3>
+          <p>月付：NT$${plan.price.monthly}</p>
+          <p>季付：NT$${plan.price.quarterly}</p>
+          <p>年付：NT$${plan.price.yearly}</p>
+          <p>已售出：${plan.sold} 位使用者</p>
+          <select id="pay-type-${plan.id}">
+            <option value="monthly">月付</option>
+            <option value="quarterly">季付</option>
+            <option value="yearly">年付</option>
+          </select>
+          <button class="btn-primary" onclick="addToCart('${plan.id}')">加入購物車</button>
+        `;
+      }
+  
       plansContainer.appendChild(card);
     });
   }
