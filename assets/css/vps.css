@@ -1,1 +1,23 @@
 
+/* 控制台專用樣式 */
+.vps-card {
+  background: white;
+  padding: 1.2em;
+  margin: 1em auto;
+  max-width: 400px;
+  border-radius: 10px;
+  box-shadow: 0 0 8px #ccc;
+}
+
+#vps-control-form button {
+  background: #0c9b6d;
+  color: white;
+  padding: 1em;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#vps-control-form button:hover {
+  background: #0a7f59;
+}
