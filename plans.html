@@ -39,5 +39,26 @@
       <a href="https://t.me/https://t.me/+Bz8IaIDyF201M2Rl" target="_blank">Telegram 社群</a></p>
     <p>&copy; 2024 Fachost. All rights reserved.</p>
   </footer>
+<script>
+fetch('/api/plans')
+  .then(res => res.json())
+  .then(plans => {
+    const container = document.getElementById('plans-container');
+    container.innerHTML = '';
+
+    plans.forEach(plan => {
+      const card = document.createElement('div');
+      card.className = 'plan-card';
+      card.innerHTML = `
+        <h2>${plan.region} - ${plan.cpu}核 / ${plan.ram}</h2>
+        <p>磁碟：${plan.disk}</p>
+        <p>流量：${plan.bandwidth}</p>
+        <p class="price">$${plan.price} ${plan.currency}</p>
+        <button class="buy-btn">立即購買</button>
+      `;
+      container.appendChild(card);
+    });
+  });
+</script>
 </body>
 </html>
