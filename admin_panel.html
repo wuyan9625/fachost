@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <title>管理面板 - Fachost</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <h1>管理面板</h1>
+
+  <!-- 查詢用戶 -->
+  <div class="section" id="search-user-form">
+    <h2>查詢用戶</h2>
+    <label for="user-id">用戶 UID:</label>
+    <input type="text" id="user-id" placeholder="輸入用戶 UID"><br>
+    <button onclick="getUserInfo()">查詢用戶</button>
+  </div>
+
+  <div id="user-info" class="section">
+    <h2>用戶資訊</h2>
+    <p><b>UID:</b> <span id="user-uid"></span></p>
+    <p><b>Email:</b> <span id="user-email"></span></p>
+    <p><b>名稱:</b> <span id="user-name"></span></p>
+    <p><b>是否為管理員:</b> <span id="user-is-admin"></span></p>
+  </div>
+
+  <hr>
+
+  <!-- 查詢用戶流量 -->
+  <div class="section" id="traffic-info">
+    <h2>查詢用戶流量</h2>
+    <label for="traffic-user-id">用戶 UID:</label>
+    <input type="text" id="traffic-user-id" placeholder="輸入用戶 UID"><br>
+    <button onclick="getUserTraffic()">查詢流量</button>
+
+    <div id="traffic-details">
+      <h3>流量資訊</h3>
+      <ul id="traffic-list"></ul>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 手動創建 VPS -->
+  <div class="section" id="vps-creation-form">
+    <h2>手動創建 VPS</h2>
+    <label for="user-uid">用戶 UID：</label>
+    <input type="text" id="user-uid" placeholder="輸入用戶 UID"><br>
+
+    <label for="plan-id">選擇方案：</label>
+    <select id="plan-id">
+      <option value="">請選擇方案</option>
+    </select><br>
+
+    <label for="username">VPS 帳號：</label>
+    <input type="text" id="username" value="admin"><br>
+
+    <label for="password">VPS 密碼：</label>
+    <input type="password" id="password" value="admin123"><br>
+
+    <button onclick="createVPS()">手動開通</button>
+  </div>
+
+  <hr>
+
+  <!-- 控制 VPS 開關 -->
+  <div class="section" id="vps-control-form">
+    <h2>控制 VPS 開關</h2>
+    <label for="vps-id">VPS ID:</label>
+    <input type="text" id="vps-id" placeholder="輸入 VPS ID"><br>
+
+    <button onclick="enableVPS()">啟用 VPS</button>
+    <button onclick="disableVPS()">停用 VPS</button>
+  </div>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
