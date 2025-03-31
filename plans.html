@@ -49,13 +49,24 @@ fetch('/api/plans')
     plans.forEach(plan => {
       const card = document.createElement('div');
       card.className = 'plan-card';
-      card.innerHTML = `
-        <h2>${plan.region} - ${plan.cpu}核 / ${plan.ram}</h2>
-        <p>磁碟：${plan.disk}</p>
-        <p>流量：${plan.bandwidth}</p>
-        <p class="price">$${plan.price} ${plan.currency}</p>
-        <button class="buy-btn">立即購買</button>
-      `;
+
+      if (plan.status === 'building') {
+        card.innerHTML = `
+          <h2>${plan.region}</h2>
+          <p class="text-gray-500">🚧 建置中，敬請期待</p>
+        `;
+      } else {
+        const pricePerRam = (plan.price / plan.ram).toFixed(2);
+        card.innerHTML = `
+          <h2>${plan.region} - ${plan.cpu}核 / ${plan.ram}${plan.ram_unit}</h2>
+          <p>磁碟：${plan.disk}</p>
+          <p>流量：${plan.bandwidth}</p>
+          <p class="price">價格：$${plan.price} ${plan.currency}</p>
+          <p class="config-price">價配置：$${pricePerRam} / 每 ${plan.ram_unit}</p>
+          <button class="buy-btn">立即購買</button>
+        `;
+      }
+
       container.appendChild(card);
     });
   });
