@@ -1,0 +1,29 @@
+/* 管理員面板專用樣式 */
+#vps-creation-form,
+#search-user-form,
+#traffic-info,
+#vps-control-form {
+  margin: 2em;
+  padding: 2em;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #ccc;
+}
+
+#vps-creation-form input,
+#search-user-form input,
+#traffic-info input,
+#vps-control-form input {
+  padding: 0.6em;
+  margin: 1em 0;
+  width: 100%;
+}
+
+#traffic-details {
+  margin-top: 2em;
+}
+
+#traffic-list {
+  list-style: none;
+  padding: 0;
+}
