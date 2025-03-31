@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
       div.className = "cart-item";
       div.innerHTML = `
         <span>${item.name}</span>
-        <span>NT$${item.price}</span>
+        <span>CNY${item.price}</span>
         <button onclick="removeItem(${index})">移除</button>
       `;
       cartItemsContainer.appendChild(div);
