@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>訂單成功 - Fachost</title>
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>結帳成功 - Fachost</title>
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-  <header class="hero">
-    <h1>訂單成功</h1>
-    <p>您的訂單已成功創建！</p>
+  <div class="checkout-result">
+    <h1>結帳成功</h1>
+    <p>您的訂單已經成功處理！</p>
     <p>訂單編號：<span id="order-id"></span></p>
     <p>總金額：<span id="total-amount"></span></p>
-    <p>您可以前往<a href="orders.html">查看您的訂單</a>，或返回首頁。</p>
     <button onclick="window.location.href='index.html'">返回首頁</button>
-  </header>
+  </div>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const params = new URLSearchParams(window.location.search);
