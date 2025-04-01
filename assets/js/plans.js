@@ -139,7 +139,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const data = await res.json();
 
         if (res.ok) {
-          // 假設成功後會返回支付連結
           const paymentLink = data.paymentLink;
           window.location.href = paymentLink;
         } else {
