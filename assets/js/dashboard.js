@@ -92,25 +92,31 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // 刷新 IP
-  async function refreshIp(vpsId) {
-    const action = confirm("您確定要刷新 VPS IP 嗎？");
+async function refreshIp(vpsId) {
+  const action = confirm("您確定要刷新 VPS IP 嗎？");
 
-    if (action) {
-      try {
-        const response = await fetch(`/api/vps/${vpsId}/refresh-ip`, {
-          method: "POST",
-          headers: {
-            "Authorization": `Bearer ${localStorage.getItem("jwt_token")}`,
-          },
-        });
-        const data = await response.json();
-        alert(data.message);
+  if (action) {
+    try {
+      const response = await fetch(`/api/vps/${vpsId}/refresh-ip`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem("jwt_token")}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert(`IP 刷新成功！新的 IP 地址為：${data.new_ip}`);
         fetchVpsList(); // 重新加載 VPS 列表
-      } catch (error) {
-        alert("刷新 IP 失敗，請稍後再試！");
+      } else {
+        alert(data.error || "刷新失敗！");
       }
+    } catch (error) {
+      alert("刷新 IP 失敗，請稍後再試！");
     }
   }
+}
 
   // 註冊登出事件
   const logoutBtn = document.getElementById("logout-btn");
