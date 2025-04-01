@@ -1,7 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
   const regionTabs = document.querySelectorAll(".tab-btn");
   const plansContainer = document.getElementById("plans-container");
-  
+  const cartItemsContainer = document.getElementById("cart-items");
+  const totalPriceSpan = document.getElementById("total-price");
+
   // 用來存儲套餐資料
   let plansData = {};
 
@@ -45,23 +47,18 @@ document.addEventListener("DOMContentLoaded", () => {
       const card = document.createElement("div");
       card.className = "plan-card";
 
-      if (plan.sold >= plan.inventory) {
-        card.innerHTML = `
-          <h3>${plan.region} - ${plan.name}</h3>
-          <p style="color:gray;">此套餐已售完，無庫存</p>
-        `;
-      } else {
-        card.innerHTML = `
-          <h3>${plan.region} - ${plan.name}</h3>
-          <p>月付：NT$${plan.price.monthly}</p>
-          <p>季付：NT$${plan.price.quarterly}</p>
-          <p>年付：NT$${plan.price.yearly}</p>
-          <p>已售出：${plan.sold} 位使用者</p>
-          <p>剩餘庫存：${plan.remaining_inventory}</p>
-          <button class="btn-primary" onclick="addToCart('${plan.id}')">加入購物車</button>
-        `;
-      }
-
+      const isOutOfStock = plan.sold >= plan.inventory;
+      card.innerHTML = `
+        <h3>${plan.region} - ${plan.name}</h3>
+        <p>月付：NT$${plan.price.monthly}</p>
+        <p>季付：NT$${plan.price.quarterly}</p>
+        <p>年付：NT$${plan.price.yearly}</p>
+        <p>已售出：${plan.sold} 位使用者</p>
+        <p>剩餘庫存：${plan.inventory - plan.sold}</p>
+        <button class="btn-primary" onclick="addToCart('${plan.id}')" ${isOutOfStock ? 'disabled' : ''}>
+          ${isOutOfStock ? '庫存不足' : '加入購物車'}
+        </button>
+      `;
       plansContainer.appendChild(card);
     });
   }
@@ -83,6 +80,13 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("套餐資料有誤！");
       return;
     }
+
+    // 檢查庫存
+    if (plan.inventory <= plan.sold) {
+      alert("該套餐庫存不足，無法加入購物車！");
+      return;
+    }
+
     const cart = JSON.parse(localStorage.getItem("cart") || "[]");
     cart.push(plan);
     localStorage.setItem("cart", JSON.stringify(cart));
