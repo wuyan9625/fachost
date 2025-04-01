@@ -123,32 +123,36 @@ document.addEventListener("DOMContentLoaded", () => {
     renderCart();
   };
 
-  // 結帳功能
-  const checkoutBtn = document.getElementById("checkout-btn");
-  if (checkoutBtn) {
-    checkoutBtn.addEventListener("click", async () => {
-      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-      const totalAmount = cart.reduce((total, item) => total + item.price, 0);
+// 結帳功能
+const checkoutBtn = document.getElementById("checkout-btn");
+if (checkoutBtn) {
+  checkoutBtn.addEventListener("click", async () => {
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const totalAmount = cart.reduce((total, item) => total + item.price, 0);
 
-      try {
-        const res = await fetch("/api/create-order", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ totalAmount })
-        });
-        const data = await res.json();
+    try {
+      const res = await fetch("/api/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ totalAmount })
+      });
+      const data = await res.json();
 
-        if (res.ok) {
-          const paymentLink = data.paymentLink;
-          window.location.href = paymentLink;
-        } else {
-          alert("創建訂單失敗！");
-        }
-      } catch (err) {
-        alert("發生錯誤：" + err);
+      if (res.ok) {
+        // 支付成功，跳轉到支付頁面
+        const paymentLink = data.paymentLink;
+        window.location.href = paymentLink;
+      } else {
+        // 創建訂單失敗，顯示失敗頁面
+        window.location.href = "/order-failed.html"; // 失敗頁面
       }
-    });
-  }
+    } catch (err) {
+      alert("發生錯誤：" + err);
+      // 發生錯誤，跳轉到失敗頁面
+      window.location.href = "/order-failed.html"; // 失敗頁面
+    }
+  });
+}
 
   // 初始加載套餐資料
   fetchPlans();
