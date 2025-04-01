@@ -1,25 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // 語言切換，這部分可根據需求刪除或實現
-  const langToggle = document.getElementById("lang-toggle");
-  langToggle.addEventListener("click", () => {
-    if (langToggle.textContent === "EN") {
-      langToggle.textContent = "中文";
-      alert("Switched to English (功能待擴充)");
-    } else {
-      langToggle.textContent = "EN";
-      alert("已切換為中文（功能待擴充）");
-    }
-  });
-
   // 登入彈窗顯示
   const loginBtn = document.getElementById("login-btn");
   const modal = document.getElementById("auth-modal");
   const closeBtn = document.getElementById("close-modal");
 
-  loginBtn && loginBtn.addEventListener("click", () => {
-    modal.classList.remove("hidden");
-    setAuthMode("login");
-  });
+  if (loginBtn) {
+    loginBtn.addEventListener("click", () => {
+      modal.classList.remove("hidden");
+      setAuthMode("login");  // 顯示登入模式
+    });
+  }
 
   closeBtn.addEventListener("click", () => {
     modal.classList.add("hidden");
@@ -32,23 +22,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // 切換註冊/登入模式
+  // 模式切換（登入/註冊）
   const switchLink = document.getElementById("switch-to-register");
   const authTitle = document.getElementById("auth-title");
   const confirmGroup = document.getElementById("confirm-password-group");
   const verificationGroup = document.getElementById("verification-group");
   const submitBtn = document.getElementById("submit-auth");
-  let mode = "login";
+  let mode = "login";  // 默認模式為登入
 
+  // 切換登入與註冊模式
   switchLink.addEventListener("click", (e) => {
     e.preventDefault();
     if (mode === "login") {
-      setAuthMode("register");
+      setAuthMode("register");  // 切換到註冊模式
     } else {
-      setAuthMode("login");
+      setAuthMode("login");  // 切換到登入模式
     }
   });
 
+  // 設置不同模式下的表單顯示
   function setAuthMode(type) {
     mode = type;
     if (type === "register") {
@@ -56,75 +48,15 @@ document.addEventListener("DOMContentLoaded", () => {
       confirmGroup.classList.remove("hidden");
       verificationGroup.classList.remove("hidden");
       submitBtn.textContent = "註冊";
-      switchLink.innerHTML = `已經有帳號？<a href="#" id="switch-to-register">登入</a>`;
     } else {
       authTitle.textContent = "登入";
       confirmGroup.classList.add("hidden");
       verificationGroup.classList.add("hidden");
       submitBtn.textContent = "登入";
-      switchLink.innerHTML = `還沒有帳號？<a href="#" id="switch-to-register">註冊</a>`;
     }
   }
 
-  // 註冊表單提交
-  submitBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    const confirmPassword = document.getElementById("confirm-password").value;
-
-    if (mode === "register") {
-      // 註冊邏輯
-      if (password !== confirmPassword) {
-        alert("密碼不一致！");
-        return;
-      }
-      if (!document.getElementById("accept-terms").checked) {
-        alert("請同意服務條款");
-        return;
-      }
-
-      // 向後端發送註冊請求
-      fetch("/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          email,
-          password
-        })
-      }).then((res) => res.json()).then((data) => {
-        if (data.message === "註冊成功") {
-          alert("註冊成功，請登錄！");
-          // 可以選擇自動切換到登入模式
-        } else {
-          alert(data.error || "註冊失敗");
-        }
-      }).catch(err => alert("註冊錯誤：" + err));
-    } else {
-      // 登錄邏輯
-      fetch("/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          email,
-          password
-        })
-      }).then((res) => res.json()).then((data) => {
-        if (data.message === "登入成功") {
-          alert("登入成功！");
-          // 登錄後的操作，如跳轉到控制台
-        } else {
-          alert(data.error || "登入失敗");
-        }
-      }).catch(err => alert("登入錯誤：" + err));
-    }
-  });
-
-  // 發送驗證碼（未串後端，佔位用）
+  // 發送驗證碼（示意功能，未串接後端）
   const sendCodeBtn = document.getElementById("send-code");
   sendCodeBtn.addEventListener("click", () => {
     const email = document.getElementById("email").value;
@@ -132,7 +64,57 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("請先輸入 Email！");
       return;
     }
-    alert(`驗證碼已發送至：${email}（示意）`);
-    // 實際應發 POST 請求給後端發送驗證碼
+    // 實際應該發 POST 請求，並由後端處理發送驗證碼
+    fetch("/api/send-verification-code", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email })
+    }).then(response => response.json())
+      .then(data => alert(`驗證碼已發送至：${email}`))
+      .catch(error => alert("發送驗證碼失敗：" + error));
+  });
+
+  // 處理表單提交（登入或註冊）
+  document.getElementById("auth-form").addEventListener("submit", (event) => {
+    event.preventDefault();
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    if (mode === "register") {
+      const confirmPassword = document.getElementById("confirm-password").value;
+      const verificationCode = document.getElementById("verification-code").value;
+
+      // 註冊 API 調用
+      fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, confirmPassword, verificationCode })
+      }).then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert("註冊成功！");
+            modal.classList.add("hidden");
+          } else {
+            alert(data.error || "註冊失敗");
+          }
+        })
+        .catch(error => alert("錯誤: " + error));
+    } else {
+      // 登入 API 調用
+      fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      }).then(response => response.json())
+        .then(data => {
+          if (data.token) {
+            localStorage.setItem("jwt_token", data.token);
+            window.location.href = "dashboard.html"; // 登入後跳轉到控制台
+          } else {
+            alert("登入失敗");
+          }
+        })
+        .catch(error => alert("錯誤: " + error));
+    }
   });
 });
