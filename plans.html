@@ -5,8 +5,7 @@
   <title>Fachost 套餐方案</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="assets/css/style.css" />
-  <script src="assets/js/app.js" defer></script>
-  <script src="assets/js/cart.js" defer></script>
+  <script src="assets/js/plans.js" defer></script>
 </head>
 <body>
   <nav class="navbar">
@@ -16,22 +15,34 @@
       <li><a href="plans.html" class="active">方案</a></li>
       <li><a href="dashboard.html">控制台</a></li>
       <li><a href="#" id="login-btn">登入</a></li>
-      <li><a href="#" id="lang-toggle">EN</a></li>
     </ul>
   </nav>
 
   <main class="plans-page">
     <h1>選擇您的雲主機方案</h1>
 
+    <!-- 方案區域選擇按鈕 -->
     <div class="region-tabs">
       <button class="tab-btn active" data-region="tw">TaiWan</button>
       <button class="tab-btn" data-region="hk">HongKong</button>
       <button class="tab-btn" data-region="us">North America</button>
     </div>
 
+    <!-- 方案卡片展示區 -->
     <div class="plans-container" id="plans-container">
-      <!-- 卡片會由 JS 插入 -->
+      <!-- 方案會由 JavaScript 插入 -->
     </div>
+
+    <!-- 購物車 -->
+    <div id="cart-items">
+      <!-- 購物車項目將動態顯示在此 -->
+    </div>
+
+    <div id="total-price">
+      <!-- 顯示總價 -->
+    </div>
+
+    <button id="checkout-btn">結帳</button>
   </main>
 
   <footer>
@@ -39,37 +50,8 @@
       <a href="https://t.me/https://t.me/+Bz8IaIDyF201M2Rl" target="_blank">Telegram 社群</a></p>
     <p>&copy; 2024 Fachost. All rights reserved.</p>
   </footer>
-<script>
-fetch('/api/plans')
-  .then(res => res.json())
-  .then(plans => {
-    const container = document.getElementById('plans-container');
-    container.innerHTML = '';
 
-    plans.forEach(plan => {
-      const card = document.createElement('div');
-      card.className = 'plan-card';
-
-      if (plan.status === 'building') {
-        card.innerHTML = `
-          <h2>${plan.region}</h2>
-          <p class="text-gray-500">🚧 建置中，敬請期待</p>
-        `;
-      } else {
-        const pricePerRam = (plan.price / plan.ram).toFixed(2);
-        card.innerHTML = `
-          <h2>${plan.region} - ${plan.cpu}核 / ${plan.ram}${plan.ram_unit}</h2>
-          <p>磁碟：${plan.disk}</p>
-          <p>流量：${plan.bandwidth}</p>
-          <p class="price">價格：$${plan.price} ${plan.currency}</p>
-          <p class="config-price">價配置：$${pricePerRam} / 每 ${plan.ram_unit}</p>
-          <button class="buy-btn">立即購買</button>
-        `;
-      }
-
-      container.appendChild(card);
-    });
-  });
-</script>
 </body>
 </html>
+
+<script src="assets/js/plans.js" defer></script>
