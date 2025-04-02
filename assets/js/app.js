@@ -14,11 +14,11 @@ function initNavBar() {
   if (role === 'admin') {
     // 如果是管理員，導航到管理員控制台頁面
     controlPanelLink.href = "admin-dashboard.html";
-    controlPanelLink.textContent = "管理員控制台";
+    controlPanelLink.textContent = "admin控制台";
   } else {
     // 如果是普通用戶，導航到普通用戶控制台頁面
     controlPanelLink.href = "dashboard.html";
-    controlPanelLink.textContent = "用戶控制台";
+    controlPanelLink.textContent = "uesr控制台";
   }
 
   navLinks.forEach(link => {
