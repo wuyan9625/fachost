@@ -31,7 +31,7 @@ function bindCommonEvents() {
   const closeModal = document.getElementById("close-modal");
   const authForm = document.getElementById("auth-form");
 
-  if (loginBtn) {
+  if (loginBtn && modal) {
     loginBtn.addEventListener("click", () => {
       modal.classList.remove("hidden"); // 顯示登入彈窗
     });
