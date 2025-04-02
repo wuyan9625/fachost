@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
       total += item.price;
     });
 
-    if (totalPriceSpan) totalPriceSpan.textContent = `NT$${total}`;
+    if (totalPriceSpan) totalPriceSpan.textContent = `USD$${total}`;
   }
 
   // 移除購物車項目
