@@ -59,6 +59,7 @@ function bindCommonEvents() {
       const authTitle = document.getElementById("auth-title");
       const submitBtn = document.getElementById("submit-auth");
       const confirmPasswordGroup = document.getElementById("confirm-password-group");
+      const verificationGroup = document.getElementById("verification-group");
 
       // 更新標題和按鈕文字
       authTitle.textContent = "註冊";
@@ -66,7 +67,10 @@ function bindCommonEvents() {
 
       // 顯示確認密碼輸入框
       confirmPasswordGroup.classList.remove("hidden");
-
+      
+       // 顯示驗證碼
+      verificationGroup.classList.remove("hidden");
+      
       // 切換到註冊 API 提交邏輯
       authForm.removeEventListener("submit", handleLoginSubmit);
       authForm.addEventListener("submit", handleRegisterSubmit);
