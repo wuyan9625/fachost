@@ -70,3 +70,12 @@ function bindCommonEvents() {
           alert("✅ 登入成功！");
           localStorage.setItem("jwt_token", data.token);
           localStorage.setItem("role", data.role);
+          document.getElementById("auth-modal").classList.add("hidden");
+          window.location.href = "dashboard.html"; // 或導向你想去的頁面
+        } else {
+          alert(data.error || "登入失敗");
+        }
+      })
+      .catch(err => {
+        alert("伺服器錯誤，請稍後再試");
+        console.error(err);
