@@ -4,15 +4,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const cartItemsContainer = document.getElementById("cart-items");
   const totalPriceSpan = document.getElementById("total-price");
 
-  // 用來存儲套餐資料
   let plansData = {};
-  
-  // 初始加載套餐資料
-  fetchPlans();
 
-  // 顯示購物車
-  renderCart();
-  
+  // 初始化：根據用戶角色顯示不同控制台
+  const role = localStorage.getItem("role");
+  const controlPanelBtn = document.getElementById("control-panel");
+  if (controlPanelBtn) {
+    if (role === "admin") {
+      controlPanelBtn.innerHTML = "管理控制台";
+      controlPanelBtn.onclick = () => {
+        window.location.href = "admin-dashboard.html"; // 管理員控制台頁面
+      };
+    } else {
+      controlPanelBtn.innerHTML = "使用者控制台";
+      controlPanelBtn.onclick = () => {
+        window.location.href = "user-dashboard.html"; // 使用者控制台頁面
+      };
+    }
+  }
+
   // 取得套餐資料
   async function fetchPlans() {
     try {
@@ -48,7 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderPlans(region) {
     plansContainer.innerHTML = "";
     const plans = plansData[region] || [];
-
     plans.forEach((plan) => {
       const card = document.createElement("div");
       card.className = "plan-card";
@@ -87,7 +96,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // 檢查庫存
     if (plan.inventory <= plan.sold) {
       alert("該套餐庫存不足，無法加入購物車！");
       return;
@@ -118,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
       total += item.price;
     });
 
-    if (totalPriceSpan) totalPriceSpan.textContent = `USD$${total}`;
+    if (totalPriceSpan) totalPriceSpan.textContent = `NT$${total}`;
   }
 
   // 移除購物車項目
@@ -129,36 +137,33 @@ document.addEventListener("DOMContentLoaded", () => {
     renderCart();
   };
 
-// 結帳功能
-const checkoutBtn = document.getElementById("checkout-btn");
-if (checkoutBtn) {
-  checkoutBtn.addEventListener("click", async () => {
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-    const totalAmount = cart.reduce((total, item) => total + item.price, 0);
+  // 結帳功能
+  const checkoutBtn = document.getElementById("checkout-btn");
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener("click", async () => {
+      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+      const totalAmount = cart.reduce((total, item) => total + item.price, 0);
 
-    try {
-      const res = await fetch("/api/create-order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ totalAmount })
-      });
-      const data = await res.json();
+      try {
+        const res = await fetch("/api/create-order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ totalAmount })
+        });
+        const data = await res.json();
 
-      if (res.ok) {
-        // 支付成功，跳轉到支付頁面
-        const paymentLink = data.paymentLink;
-        window.location.href = paymentLink;
-      } else {
-        // 創建訂單失敗，顯示失敗頁面
+        if (res.ok) {
+          const paymentLink = data.paymentLink;
+          window.location.href = paymentLink;
+        } else {
+          window.location.href = "/order-failed.html"; // 失敗頁面
+        }
+      } catch (err) {
+        alert("發生錯誤：" + err);
         window.location.href = "/order-failed.html"; // 失敗頁面
       }
-    } catch (err) {
-      alert("發生錯誤：" + err);
-      // 發生錯誤，跳轉到失敗頁面
-      window.location.href = "/order-failed.html"; // 失敗頁面
-    }
-  });
-}
+    });
+  }
 
   // 初始加載套餐資料
   fetchPlans();
