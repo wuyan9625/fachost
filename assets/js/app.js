@@ -48,7 +48,7 @@ function bindCommonEvents() {
       localStorage.removeItem("jwt_token");
       localStorage.removeItem("role");
       alert("已登出！");
-      window.location.href = "/";
+      window.location.href = "/";  // 重定向回首頁
     });
   }
 
@@ -59,7 +59,7 @@ function bindCommonEvents() {
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value.trim();
 
-      fetch("https://api.fachost.cloud/api/login", {
+      fetch("https://api.fachost.cloud/api/login", {  // 改為 HTTPS
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
@@ -79,3 +79,7 @@ function bindCommonEvents() {
       .catch(err => {
         alert("伺服器錯誤，請稍後再試");
         console.error(err);
+      });
+    });
+  }
+}
