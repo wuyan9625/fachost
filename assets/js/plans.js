@@ -6,7 +6,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 用來存儲套餐資料
   let plansData = {};
+  
+  // 初始加載套餐資料
+  fetchPlans();
 
+  // 顯示購物車
+  renderCart();
+  
   // 取得套餐資料
   async function fetchPlans() {
     try {
