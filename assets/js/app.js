@@ -59,7 +59,7 @@ function bindCommonEvents() {
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value.trim();
 
-      fetch("http://122.117.80.251:5000/api/login", {
+      fetch("https://api.fachost.cloud/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
