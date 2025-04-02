@@ -68,7 +68,7 @@ function bindCommonEvents() {
       // 顯示確認密碼輸入框
       confirmPasswordGroup.classList.remove("hidden");
       
-       // 顯示驗證碼
+      // 顯示驗證碼
       verificationGroup.classList.remove("hidden");
       
       // 切換到註冊 API 提交邏輯
@@ -101,7 +101,13 @@ function handleLoginSubmit(e) {
       localStorage.setItem("jwt_token", data.token);
       localStorage.setItem("role", data.role);
       document.getElementById("auth-modal").classList.add("hidden");
-      window.location.href = "dashboard.html"; // 或導向你想去的頁面
+
+      // 根據角色跳轉到不同頁面
+      if (data.role === 'admin') {
+        window.location.href = "admin-dashboard.html";  // 管理員頁面
+      } else {
+        window.location.href = "dashboard.html";  // 一般用戶頁面
+      }
     } else {
       alert(data.error || "登入失敗");
     }
@@ -134,9 +140,15 @@ function handleRegisterSubmit(e) {
     if (data.token) {
       alert("✅ 註冊成功！");
       localStorage.setItem("jwt_token", data.token);
-      localStorage.setItem("role", data.role);
+      localStorage.setItem("role", data.role);  // 記錄角色
       document.getElementById("auth-modal").classList.add("hidden");
-      window.location.href = "dashboard.html"; // 或導向你想去的頁面
+
+      // 根據角色跳轉到不同頁面
+      if (data.role === 'admin') {
+        window.location.href = "admin-dashboard.html";  // 管理員頁面
+      } else {
+        window.location.href = "dashboard.html";  // 一般用戶頁面
+      }
     } else {
       alert(data.error || "註冊失敗");
     }
