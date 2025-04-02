@@ -1,50 +1,72 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 基本 UI 初始化
-    initNavBar(); // 初始化導航欄
-    initFooter(); // 初始化頁腳
-    
-    // 綁定通用的事件
-    bindCommonEvents(); // 綁定常規事件
+  initNavBar();
+  initFooter();
+  bindCommonEvents();
 });
 
 // 初始化導航欄
 function initNavBar() {
-    const navLinks = document.querySelectorAll(".nav-links a");
-    navLinks.forEach(link => {
-        link.addEventListener("click", (event) => {
-            event.preventDefault();
-            handleNavigation(link.href);
-        });
+  const navLinks = document.querySelectorAll(".nav-links a");
+  navLinks.forEach(link => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      handleNavigation(link.href);
     });
+  });
 }
 
-// 處理頁面導航邏輯
+// 跳轉處理
 function handleNavigation(url) {
-    // 可以加載對應頁面，或是做一些路由處理
-    window.location.href = url;
+  window.location.href = url;
 }
 
-// 初始化頁腳（可擴展其他功能）
-function initFooter() {
-    const footer = document.querySelector("footer");
-    // 如果需要可以在這裡動態設置 footer 內容
-}
+// 初始化頁腳（你可加其他資訊）
+function initFooter() {}
 
-// 綁定一些通用事件
+// 綁定登入/登出/登入表單
 function bindCommonEvents() {
-    const loginBtn = document.getElementById("login-btn");
-    const logoutBtn = document.getElementById("logout-btn");
-    
-    if (loginBtn) {
-        loginBtn.addEventListener("click", () => {
-            window.location.href = "/login.html"; // 或顯示登入彈窗
-        });
-    }
-    
-    if (logoutBtn) {
-        logoutBtn.addEventListener("click", () => {
-            localStorage.removeItem("jwt_token");
-            window.location.href = "/"; // 重新導向到首頁
-        });
-    }
-}
+  const loginBtn = document.getElementById("login-btn");
+  const logoutBtn = document.getElementById("logout-btn");
+  const modal = document.getElementById("auth-modal");
+  const closeModal = document.getElementById("close-modal");
+  const authForm = document.getElementById("auth-form");
+
+  if (loginBtn) {
+    loginBtn.addEventListener("click", () => {
+      modal.classList.remove("hidden"); // 顯示登入彈窗
+    });
+  }
+
+  if (closeModal) {
+    closeModal.addEventListener("click", () => {
+      modal.classList.add("hidden");
+    });
+  }
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("jwt_token");
+      localStorage.removeItem("role");
+      alert("已登出！");
+      window.location.href = "/";
+    });
+  }
+
+  // 登入提交事件
+  if (authForm) {
+    authForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      fetch("http://122.117.80.251:5000/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.token) {
+          alert("✅ 登入成功！");
+          localStorage.setItem("jwt_token", data.token);
+          localStorage.setItem("role", data.role);
