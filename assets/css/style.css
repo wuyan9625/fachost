@@ -137,19 +137,76 @@ button:disabled {
   color: white;
 }
 
-/* 購物車 */
+ChatGPT 說：
+如果您有容器但沒有樣式顯示，可能是您需要為購物車項目添加一些基本的樣式。下面我將提供一個簡單的購物車樣式範例，您可以根據需要調整。
+
+1. 基本購物車樣式：
+在您的 CSS 文件中（例如 style.css），可以添加以下樣式來顯示購物車項目：
+
+css
+複製
+/* 購物車容器 */
+#cart-items {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin: 20px 0;
+  background-color: #f9f9f9;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 購物車項目 */
 .cart-item {
   display: flex;
   justify-content: space-between;
-  background: white;
-  margin: 0.5em 1em;
-  padding: 1em;
-  border-radius: 8px;
+  padding: 10px;
+  margin: 5px 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
 }
 
-.cart-summary {
+.cart-item span {
+  font-size: 14px;
+  color: #333;
+}
+
+.cart-item button {
+  background-color: #f44336;  /* 紅色 */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.cart-item button:hover {
+  background-color: #e53935;  /* 深紅色 */
+}
+
+/* 顯示總價 */
+#total-price {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: right;
+}
+
+/* 結帳按鈕 */
+#checkout-btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  display: block;
+  margin: 20px auto;
   text-align: center;
-  padding: 1em;
+}
+
+#checkout-btn:hover {
+  background-color: #45a049;
 }
 
 /* 控制台 */
