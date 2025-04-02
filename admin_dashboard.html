@@ -64,6 +64,47 @@
 
   <hr>
 
+  <!-- 套餐新增 -->
+  <div class="section" id="create-plan-form">
+    <h2>新增套餐</h2>
+    <label for="plan-id">套餐 ID:</label>
+    <input type="text" id="plan-id" placeholder="輸入套餐 ID"><br>
+
+    <label for="region">區域:</label>
+    <input type="text" id="region" placeholder="輸入區域"><br>
+
+    <label for="cpu">CPU 數量:</label>
+    <input type="number" id="cpu" placeholder="輸入 CPU 數量"><br>
+
+    <label for="ram">RAM 數量:</label>
+    <input type="number" id="ram" placeholder="輸入 RAM 數量"><br>
+
+    <label for="ram-unit">RAM 單位:</label>
+    <input type="text" id="ram-unit" placeholder="輸入 RAM 單位"><br>
+
+    <label for="disk">磁碟容量:</label>
+    <input type="text" id="disk" placeholder="輸入磁碟容量"><br>
+
+    <label for="bandwidth">帶寬:</label>
+    <input type="text" id="bandwidth" placeholder="輸入帶寬"><br>
+
+    <label for="price">價格:</label>
+    <input type="number" id="price" placeholder="輸入價格"><br>
+
+    <label for="currency">貨幣:</label>
+    <input type="text" id="currency" placeholder="輸入貨幣"><br>
+
+    <label for="server-id">服務器 ID:</label>
+    <input type="text" id="server-id" placeholder="輸入服務器 ID"><br>
+
+    <label for="is-under-construction">是否建設中:</label>
+    <input type="checkbox" id="is-under-construction"><br>
+
+    <button onclick="createPlan()">創建套餐</button>
+  </div>
+
+  <hr>
+
   <!-- 控制 VPS 開關 -->
   <div class="section" id="vps-control-form">
     <h2>控制 VPS 開關</h2>
