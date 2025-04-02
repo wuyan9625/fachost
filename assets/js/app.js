@@ -37,7 +37,7 @@ function bindCommonEvents() {
     });
   }
 
-  if (closeModal) {
+  if (closeModal && modal) {
     closeModal.addEventListener("click", () => {
       modal.classList.add("hidden");
     });
