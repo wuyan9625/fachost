@@ -7,6 +7,20 @@ document.addEventListener("DOMContentLoaded", () => {
 // 初始化導航欄
 function initNavBar() {
   const navLinks = document.querySelectorAll(".nav-links a");
+  const role = localStorage.getItem("role");  // 從 localStorage 獲取角色
+  const controlPanelLink = document.getElementById("control-panel");
+
+  // 根據角色設置導航欄
+  if (role === 'admin') {
+    // 如果是管理員，導航到管理員控制台頁面
+    controlPanelLink.href = "admin-dashboard.html";
+    controlPanelLink.textContent = "管理員控制台";
+  } else {
+    // 如果是普通用戶，導航到普通用戶控制台頁面
+    controlPanelLink.href = "dashboard.html";
+    controlPanelLink.textContent = "用戶控制台";
+  }
+
   navLinks.forEach(link => {
     link.addEventListener("click", (event) => {
       event.preventDefault();
