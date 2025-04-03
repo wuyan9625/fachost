@@ -163,7 +163,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // ✅ 管理者：查詢所有 VPS 並依流量排序
   async function fetchAdminTrafficRanking() {
     try {
       const res = await fetch("/api/admin/vps/traffic-ranking");
