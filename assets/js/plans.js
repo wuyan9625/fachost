@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       controlPanelBtn.innerHTML = "使用者控制台";
       controlPanelBtn.onclick = () => {
-        window.location.href = "user-dashboard.html"; // 使用者控制台頁面
+        window.location.href = "dashboard.html"; // 使用者控制台頁面
       };
     }
   }
