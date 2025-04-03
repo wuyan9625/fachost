@@ -29,6 +29,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  async function getVpsTraffic(vpsId) {
+    try {
+      const res = await fetch(`/api/vps/${vpsId}/traffic`);
+      return await res.json();
+    } catch (err) {
+      console.error("無法取得流量資訊", err);
+      return {
+        used_traffic: 0,
+        limit_traffic: 0,
+        remaining_traffic: 0
+      };
+    }
+  }
+
   function renderVpsList(vpsList) {
     vpsListContainer.innerHTML = "";
 
@@ -36,9 +50,11 @@ document.addEventListener("DOMContentLoaded", () => {
       vpsListContainer.innerHTML = "<p>您目前沒有任何 VPS。</p>";
     }
 
-    vpsList.forEach((vps) => {
+    vpsList.forEach(async (vps) => {
       const vpsCard = document.createElement("div");
       vpsCard.className = "vps-card";
+
+      const traffic = await getVpsTraffic(vps.id);
 
       const modeOptions = `
         <option value="manual" ${vps.refresh_mode === 'manual' ? 'selected' : ''}>手動</option>
@@ -58,6 +74,8 @@ document.addEventListener("DOMContentLoaded", () => {
         <p>IP: ${vps.ip}</p>
         <p>狀態: ${vps.status}</p>
         <p>剩餘天數: ${vps.days_left} 天</p>
+        <p>流量使用：${traffic.used_traffic} / ${traffic.limit_traffic} GB</p>
+        <p>剩餘：${traffic.remaining_traffic} GB</p>
         <p>刷新模式：
           <select class="refresh-mode-select" data-vps-id="${vps.id}">
             ${modeOptions}
@@ -70,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
       vpsListContainer.appendChild(vpsCard);
     });
 
-    // 綁定刷新模式改變事件
+    // 切換刷新模式
     document.querySelectorAll(".refresh-mode-select").forEach((select) => {
       select.addEventListener("change", async (e) => {
         const mode = e.target.value;
@@ -101,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    // 綁定時間選單事件
+    // 修改自動時間選單
     document.querySelectorAll(".refresh-time-select").forEach((select) => {
       select.addEventListener("change", async (e) => {
         const time = e.target.value;
