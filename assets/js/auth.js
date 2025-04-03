@@ -55,7 +55,9 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("jwt_token", data.token);
             localStorage.setItem("role", data.role);
             document.getElementById("auth-modal").classList.add("hidden");
-            window.location.href = data.role === "admin" ? "admin-dashboard.html" : "dashboard.html";
+
+            // ✅ 統一跳轉到 plans.html
+            window.location.href = "plans.html";
           } else {
             alert(data.error || "登入失敗");
           }
