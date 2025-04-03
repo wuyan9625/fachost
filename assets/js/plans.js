@@ -65,10 +65,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const isOutOfStock = plan.sold >= plan.inventory;
       card.innerHTML = `
         <h3>${plan.region} - ${plan.name}</h3>
-        <p>月付：NT$${plan.price.monthly}</p>
-        <p>季付：NT$${plan.price.quarterly}</p>
-        <p>年付：NT$${plan.price.yearly}</p>
-        <p>已售出：${plan.sold} 位使用者</p>
+        <p>月付：USD$${plan.price.monthly}</p>
+        <p>季付：USD$${plan.price.quarterly}</p>
+        <p>年付：USD$${plan.price.yearly}</p>
+        <p>已售出：${plan.sold} 位</p>
         <p>剩餘庫存：${plan.inventory - plan.sold}</p>
         <button class="btn-primary" onclick="addToCart('${plan.id}')" ${isOutOfStock ? 'disabled' : ''}>
           ${isOutOfStock ? '庫存不足' : '加入購物車'}
