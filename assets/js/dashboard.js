@@ -1,31 +1,44 @@
 document.addEventListener("DOMContentLoaded", () => {
   const vpsListContainer = document.getElementById("vps-list");
+  const trafficRankContainer = document.getElementById("traffic-ranking");
 
-  async function fetchVpsList() {
-    try {
-      const token = localStorage.getItem("jwt_token");
-      const uid = parseJwt(token)?.uid;
-      if (!uid) return alert("請重新登入");
+  const token = localStorage.getItem("jwt_token");
+  const user = parseJwt(token);
+  const isAdmin = user?.role === "admin";
+  const uid = user?.uid;
 
-      const response = await fetch(`/api/vps/${uid}`);
-      const data = await response.json();
+  if (!token || !uid) {
+    alert("請重新登入");
+    return;
+  }
 
-      if (response.ok) {
-        renderVpsList(data);
-      } else {
-        alert(data.message || "無法加載 VPS 資訊");
-      }
-    } catch (err) {
-      console.error("錯誤:", err);
-      alert("伺服器錯誤");
-    }
+  if (isAdmin && trafficRankContainer) {
+    fetchAdminTrafficRanking();
+  } else {
+    fetchUserVpsList(uid);
   }
 
   function parseJwt(token) {
     try {
       return JSON.parse(atob(token.split('.')[1]));
-    } catch (e) {
+    } catch {
       return null;
+    }
+  }
+
+  async function fetchUserVpsList(uid) {
+    try {
+      const res = await fetch(`/api/vps/${uid}`);
+      const vpsList = await res.json();
+
+      if (Array.isArray(vpsList)) {
+        renderVpsList(vpsList);
+      } else {
+        alert(vpsList.error || "無法加載 VPS");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("伺服器錯誤");
     }
   }
 
@@ -33,8 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const res = await fetch(`/api/vps/${vpsId}/traffic`);
       return await res.json();
-    } catch (err) {
-      console.error("無法取得流量資訊", err);
+    } catch {
       return {
         used_traffic: 0,
         limit_traffic: 0,
@@ -47,7 +59,8 @@ document.addEventListener("DOMContentLoaded", () => {
     vpsListContainer.innerHTML = "";
 
     if (vpsList.length === 0) {
-      vpsListContainer.innerHTML = "<p>您目前沒有任何 VPS。</p>";
+      vpsListContainer.innerHTML = "<p>目前沒有 VPS。</p>";
+      return;
     }
 
     vpsList.forEach(async (vps) => {
@@ -88,7 +101,10 @@ document.addEventListener("DOMContentLoaded", () => {
       vpsListContainer.appendChild(vpsCard);
     });
 
-    // 切換刷新模式
+    bindRefreshModeEvents();
+  }
+
+  function bindRefreshModeEvents() {
     document.querySelectorAll(".refresh-mode-select").forEach((select) => {
       select.addEventListener("change", async (e) => {
         const mode = e.target.value;
@@ -108,9 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const res = await fetch(`/api/vps/${vpsId}/set-refresh-mode`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
         });
 
@@ -119,7 +133,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    // 修改自動時間選單
     document.querySelectorAll(".refresh-time-select").forEach((select) => {
       select.addEventListener("change", async (e) => {
         const time = e.target.value;
@@ -127,13 +140,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const res = await fetch(`/api/vps/${vpsId}/set-refresh-mode`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            mode: "auto",
-            time
-          })
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ mode: "auto", time })
         });
 
         const data = await res.json();
@@ -143,20 +151,37 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   window.refreshIp = async function (vpsId) {
-    const ok = confirm("是否要刷新 IP？");
-    if (!ok) return;
+    if (!confirm("是否要刷新 IP？")) return;
 
-    const res = await fetch(`/api/vps/${vpsId}/refresh`, {
-      method: "POST"
-    });
+    const res = await fetch(`/api/vps/${vpsId}/refresh`, { method: "POST" });
     const data = await res.json();
     if (res.ok) {
-      alert("已刷新 IP：" + data.new_ip);
-      fetchVpsList();
+      alert("IP 已刷新：" + data.new_ip);
+      location.reload();
     } else {
       alert(data.error || "刷新失敗");
     }
   };
 
-  fetchVpsList();
+  // ✅ 管理者：查詢所有 VPS 並依流量排序
+  async function fetchAdminTrafficRanking() {
+    try {
+      const res = await fetch("/api/admin/vps/traffic-ranking");
+      const list = await res.json();
+
+      if (!Array.isArray(list)) return alert("無法載入排行榜");
+
+      trafficRankContainer.innerHTML = "<h2>全站流量排行</h2><ul>";
+
+      list.forEach((vps, i) => {
+        trafficRankContainer.innerHTML += `
+          <li>#${i + 1} - ${vps.email} (${vps.vps_id})：${(vps.traffic / 1024).toFixed(2)} GB</li>
+        `;
+      });
+
+      trafficRankContainer.innerHTML += "</ul>";
+    } catch (err) {
+      console.error("流量排行讀取錯誤", err);
+    }
+  }
 });
