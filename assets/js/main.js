@@ -1,8 +1,6 @@
-// ✅ admin 功能：套餐新增 + VPS 開通 + 用戶查詢 + VPS 控制
-
 const API_BASE = "/api";
 
-// ✅ 查詢用戶資訊
+// 查詢用戶資訊
 function getUserInfo() {
   const uid = document.getElementById("user-id").value.trim();
   if (!uid) return alert("請輸入用戶 UID");
@@ -19,7 +17,7 @@ function getUserInfo() {
     .catch(err => alert("查詢錯誤: " + err));
 }
 
-// ✅ 查詢用戶流量（此 API 需後端支援）
+// 查詢用戶流量（此 API 需後端支援）
 function getUserTraffic() {
   const uid = document.getElementById("traffic-user-id").value.trim();
   if (!uid) return alert("請輸入 UID");
@@ -38,7 +36,7 @@ function getUserTraffic() {
     .catch(err => alert("查詢錯誤: " + err));
 }
 
-// ✅ 手動開通 VPS
+// 手動開通 VPS
 function createVPS() {
   const uid = document.getElementById("user-uid").value.trim();
   const planId = document.getElementById("plan-id").value;
@@ -63,7 +61,7 @@ function createVPS() {
     .catch(err => alert("開通錯誤: " + err));
 }
 
-// ✅ 創建方案
+// 創建方案
 function createPlan() {
   const planData = {
     id: document.getElementById("plan-id").value,
@@ -96,7 +94,7 @@ function createPlan() {
     });
 }
 
-// ✅ VPS 開關
+// VPS 開關
 function enableVPS() { toggleVPS("enable"); }
 function disableVPS() { toggleVPS("disable"); }
 function toggleVPS(action) {
