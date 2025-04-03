@@ -15,8 +15,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (password !== confirmPassword) return alert("兩次密碼不一致！");
 
-      // 驗證碼驗證
-      fetch("/api/verify-code", {
+      // 驗證驗證碼
+      fetch("https://api.fachost.cloud/api/verify-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, code })
@@ -25,8 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(data => {
           if (!data.success) return alert(data.error || "驗證失敗");
 
-          // 註冊流程
-          return fetch("/api/register", {
+          // 執行註冊
+          return fetch("https://api.fachost.cloud/api/register", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(err => alert("錯誤: " + err));
     } else {
       // 登入流程
-      fetch("/api/login", {
+      fetch("https://api.fachost.cloud/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const email = document.getElementById("email").value.trim();
     if (!email) return alert("請先輸入 Email！");
 
-    fetch("/api/send-verification-code", {
+    fetch("https://api.fachost.cloud/api/send-verification-code", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email })
