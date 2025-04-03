@@ -5,14 +5,12 @@
   <title>管理面板 - Fachost</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="assets/css/style.css" />
-  <!-- 必要功能 JS -->
   <script src="assets/js/app.js" defer></script>
   <script src="assets/js/auth.js" defer></script>
   <script src="assets/js/dashboard.js" defer></script>
   <script src="assets/js/main.js"></script>
 </head>
 <body>
-  <!-- nav導航列 -->
   <nav class="navbar">
     <div class="logo">Fachost</div>
     <ul class="nav-links">
@@ -25,7 +23,6 @@
   </nav>
   <h1>管理面板</h1>
 
-  <!-- 查詢用戶 -->
   <div class="section" id="search-user-form">
     <h2>查詢用戶</h2>
     <label for="user-id">用戶 UID:</label>
@@ -43,122 +40,96 @@
 
   <hr>
 
-  <!-- 查詢用戶流量 -->
   <div class="section" id="traffic-info">
     <h2>查詢用戶流量</h2>
     <label for="traffic-user-id">用戶 UID:</label>
     <input type="text" id="traffic-user-id" placeholder="輸入用戶 UID"><br>
     <button onclick="getUserTraffic()">查詢流量</button>
-
-    <div id="traffic-details">
-      <h3>流量資訊</h3>
-      <ul id="traffic-list"></ul>
-    </div>
   </div>
 
   <hr>
 
-  <!-- 手動創建 VPS -->
   <div class="section" id="vps-creation-form">
     <h2>手動創建 VPS</h2>
     <label for="user-uid">用戶 UID：</label>
     <input type="text" id="user-uid" placeholder="輸入用戶 UID"><br>
-
     <label for="plan-id">選擇方案：</label>
     <select id="plan-id">
       <option value="">請選擇方案</option>
     </select><br>
-
     <label for="username">VPS 帳號：</label>
     <input type="text" id="username" value="admin"><br>
-
     <label for="password">VPS 密碼：</label>
     <input type="password" id="password" value="admin123"><br>
-
     <button onclick="createVPS()">手動開通</button>
   </div>
 
   <hr>
 
-  <!-- 套餐新增 -->
   <div class="section" id="create-plan-form">
     <h2>新增套餐</h2>
     <label for="plan-id">套餐 ID:</label>
     <input type="text" id="plan-id" placeholder="輸入套餐 ID"><br>
-
     <label for="region">區域:</label>
     <input type="text" id="region" placeholder="輸入區域"><br>
-
     <label for="cpu">CPU 數量:</label>
     <input type="number" id="cpu" placeholder="輸入 CPU 數量"><br>
-
     <label for="ram">RAM 數量:</label>
     <input type="number" id="ram" placeholder="輸入 RAM 數量"><br>
-
     <label for="ram-unit">RAM 單位:</label>
     <input type="text" id="ram-unit" placeholder="輸入 RAM 單位"><br>
-
     <label for="disk">磁碟容量:</label>
     <input type="text" id="disk" placeholder="輸入磁碟容量"><br>
-
     <label for="bandwidth">帶寬:</label>
     <input type="text" id="bandwidth" placeholder="輸入帶寬"><br>
-
     <label for="price">價格:</label>
     <input type="number" id="price" placeholder="輸入價格"><br>
-
     <label for="currency">貨幣:</label>
     <input type="text" id="currency" placeholder="輸入貨幣"><br>
-
     <label for="server-id">服務器 ID:</label>
     <input type="text" id="server-id" placeholder="輸入服務器 ID"><br>
-
     <label for="is-under-construction">是否建設中:</label>
     <input type="checkbox" id="is-under-construction"><br>
-
     <button onclick="createPlan()">創建套餐</button>
   </div>
 
   <hr>
 
-  <!-- 控制 VPS 開關 -->
-  <div class="section" id="vps-control-form">
-    <h2>控制 VPS 開關</h2>
-    <label for="vps-id">VPS ID:</label>
-    <input type="text" id="vps-id" placeholder="輸入 VPS ID"><br>
-
-    <button onclick="enableVPS()">啟用 VPS</button>
-    <button onclick="disableVPS()">停用 VPS</button>
-  </div>
-
-  <hr>
-
-  <!-- ✅ 設定服務器 VPS 數量上限 -->
-  <div class="section" id="server-limit-form">
-    <h2>設定服務器線路上限</h2>
-    <label for="server-limit-id">線路 Server ID：</label>
-    <input type="text" id="server-limit-id" placeholder="輸入服務器 ID"><br>
-
-    <label for="server-limit-max">最大 VPS 數量：</label>
-    <input type="number" id="server-limit-max" placeholder="輸入上限數量"><br>
-
-    <button onclick="setServerLimit()">提交</button>
-  </div>
-
   <script>
-    function setServerLimit() {
-      const server_id = document.getElementById("server-limit-id").value;
-      const max_vps = parseInt(document.getElementById("server-limit-max").value);
+    function createPlan() {
+      const plan_id = document.getElementById("plan-id").value;
+      const region = document.getElementById("region").value;
+      const cpu = document.getElementById("cpu").value;
+      const ram = document.getElementById("ram").value;
+      const ram_unit = document.getElementById("ram-unit").value;
+      const disk = document.getElementById("disk").value;
+      const bandwidth = document.getElementById("bandwidth").value;
+      const price = document.getElementById("price").value;
+      const currency = document.getElementById("currency").value;
+      const server_id = document.getElementById("server-id").value;
+      const is_under_construction = document.getElementById("is-under-construction").checked;
 
-      if (!server_id || isNaN(max_vps)) return alert("請填寫所有欄位");
+      const payload = {
+        plan_id,
+        region,
+        cpu,
+        ram,
+        ram_unit,
+        disk,
+        bandwidth,
+        price,
+        currency,
+        server_id,
+        is_under_construction
+      };
 
-      fetch("/api/admin/set-server-limit", {
+      fetch("/api/admin/create-plan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ server_id, max_vps })
+        body: JSON.stringify(payload)
       })
         .then(res => res.json())
-        .then(data => alert(data.message || data.error || "提交失敗"))
+        .then(data => alert(data.message || data.error || "創建套餐失敗"))
         .catch(err => alert("伺服器錯誤: " + err));
     }
   </script>
