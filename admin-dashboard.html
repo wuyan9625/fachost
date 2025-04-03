@@ -130,5 +130,37 @@
     <button onclick="enableVPS()">啟用 VPS</button>
     <button onclick="disableVPS()">停用 VPS</button>
   </div>
+
+  <hr>
+
+  <!-- ✅ 設定服務器 VPS 數量上限 -->
+  <div class="section" id="server-limit-form">
+    <h2>設定服務器線路上限</h2>
+    <label for="server-limit-id">線路 Server ID：</label>
+    <input type="text" id="server-limit-id" placeholder="輸入服務器 ID"><br>
+
+    <label for="server-limit-max">最大 VPS 數量：</label>
+    <input type="number" id="server-limit-max" placeholder="輸入上限數量"><br>
+
+    <button onclick="setServerLimit()">提交</button>
+  </div>
+
+  <script>
+    function setServerLimit() {
+      const server_id = document.getElementById("server-limit-id").value;
+      const max_vps = parseInt(document.getElementById("server-limit-max").value);
+
+      if (!server_id || isNaN(max_vps)) return alert("請填寫所有欄位");
+
+      fetch("/api/admin/set-server-limit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ server_id, max_vps })
+      })
+        .then(res => res.json())
+        .then(data => alert(data.message || data.error || "提交失敗"))
+        .catch(err => alert("伺服器錯誤: " + err));
+    }
+  </script>
 </body>
 </html>
