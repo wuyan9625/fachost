@@ -30,37 +30,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function fetchUserVpsList(uid) {
     try {
-      const res = await fetch(`/api/vps/${uid}`);
-  
+      const res = await fetch(`${API_BASE}/api/vps/${uid}`);
       if (!res.ok) {
         const errorData = await res.json();
-        throw new Error(errorData.error || `请求失败，状态码：${res.status}`);
+        throw new Error(errorData.error || `請求失敗，狀態碼：${res.status}`);
       }
-  
+
       const vpsList = await res.json();
-  
       if (Array.isArray(vpsList)) {
         renderVpsList(vpsList);
       } else {
-        alert("返回的数据格式不正确");
+        alert("返回的資料格式錯誤");
       }
     } catch (err) {
       console.error(err);
-      alert(err.message || "服务器错误");
+      vpsListContainer.innerHTML = `<p style="color:red;">${err.message || "伺服器錯誤，無法載入 VPS"}</p>`;
     }
   }
-
 
   async function getVpsTraffic(vpsId) {
     try {
       const res = await fetch(`${API_BASE}/api/vps/${vpsId}/traffic`);
       return await res.json();
     } catch {
-      return {
-        used_traffic: 0,
-        limit_traffic: 0,
-        remaining_traffic: 0
-      };
+      return { used_traffic: 0, limit_traffic: 0, remaining_traffic: 0 };
     }
   }
 
@@ -126,10 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
           timeSelect.style.display = "none";
         }
 
-        const payload = {
-          mode,
-          time: mode === "auto" ? timeSelect.value : null
-        };
+        const payload = { mode, time: mode === "auto" ? timeSelect.value : null };
 
         const res = await fetch(`${API_BASE}/api/vps/${vpsId}/set-refresh-mode`, {
           method: "POST",
