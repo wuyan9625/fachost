@@ -33,21 +33,31 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  async function fetchUserVpsList(uid) {
-    try {
-      const res = await fetch(`/api/vps/${uid}`);
-      const vpsList = await res.json();
-
-      if (Array.isArray(vpsList)) {
-        renderVpsList(vpsList);
-      } else {
-        alert(vpsList.error || "無法加載 VPS 資料");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("伺服器錯誤，無法取得 VPS");
+async function fetchUserVpsList(uid) {
+  try {
+    const res = await fetch(`/api/vps/${uid}`);
+    
+    // 若不是 2xx 回應，直接報錯
+    if (!res.ok) {
+      const text = await res.text();
+      console.error("錯誤回應：", text);
+      alert(`伺服器錯誤 (${res.status})，無法查詢 VPS`);
+      return;
     }
+
+    const vpsList = await res.json();
+
+    if (Array.isArray(vpsList)) {
+      renderVpsList(vpsList);
+    } else {
+      alert(vpsList.error || "無法加載 VPS 資料");
+    }
+  } catch (err) {
+    console.error("例外錯誤：", err);
+    alert("伺服器錯誤，無法取得 VPS");
   }
+}
+
 
   async function getVpsTraffic(vpsId) {
     try {
