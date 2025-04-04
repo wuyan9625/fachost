@@ -7,9 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const isAdmin = user?.role === "admin";
   const uid = user?.uid;
 
-  console.log("解析出的使用者資訊：", user);
   if (!token || !uid) {
-    alert("請重新登入（無法取得 UID）");
+    alert("請重新登入");
     return;
   }
 
@@ -21,50 +20,53 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function parseJwt(token) {
     try {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
-        '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-      ).join(''));
-      return JSON.parse(jsonPayload);
-    } catch (e) {
-      console.error("JWT 解碼錯誤：", e);
+      return JSON.parse(atob(token.split('.')[1]));
+    } catch {
       return null;
     }
   }
 
-async function fetchUserVpsList(uid) {
-  try {
-    const res = await fetch(`/api/vps/${uid}`);
-    
-    // 若不是 2xx 回應，直接報錯
-    if (!res.ok) {
+  async function fetchUserVpsList(uid) {
+    try {
+      const res = await fetch(`/api/vps/${uid}`);
       const text = await res.text();
-      console.error("錯誤回應：", text);
-      alert(`伺服器錯誤 (${res.status})，無法查詢 VPS`);
-      return;
-    }
 
-    const vpsList = await res.json();
+      if (!res.ok) {
+        console.warn("後端錯誤內容：", text);
+        alert(`❌ 無法取得 VPS 資料：${res.status}`);
+        return;
+      }
 
-    if (Array.isArray(vpsList)) {
-      renderVpsList(vpsList);
-    } else {
-      alert(vpsList.error || "無法加載 VPS 資料");
+      let vpsList;
+      try {
+        vpsList = JSON.parse(text);
+      } catch (jsonErr) {
+        console.error("回傳非 JSON 格式：", text);
+        alert("⚠️ 回傳格式錯誤，請聯絡管理員");
+        return;
+      }
+
+      if (Array.isArray(vpsList)) {
+        renderVpsList(vpsList);
+      } else {
+        alert(vpsList.error || "無法加載 VPS 資料");
+      }
+    } catch (err) {
+      console.error("例外錯誤：", err);
+      alert("伺服器錯誤，請稍後再試");
     }
-  } catch (err) {
-    console.error("例外錯誤：", err);
-    alert("伺服器錯誤，無法取得 VPS");
   }
-}
-
 
   async function getVpsTraffic(vpsId) {
     try {
       const res = await fetch(`/api/vps/${vpsId}/traffic`);
       return await res.json();
     } catch {
-      return { used_traffic: 0, limit_traffic: 0, remaining_traffic: 0 };
+      return {
+        used_traffic: 0,
+        limit_traffic: 0,
+        remaining_traffic: 0
+      };
     }
   }
 
