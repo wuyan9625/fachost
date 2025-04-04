@@ -30,22 +30,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function fetchUserVpsList(uid) {
     try {
-      const res = await fetch(`${API_BASE}/api/vps/${uid}`);
+      const res = await fetch(`/api/vps/${uid}`);
+  
       if (!res.ok) {
-        throw new Error("無法取得 VPS 資料");
+        const errorData = await res.json();
+        throw new Error(errorData.error || `请求失败，状态码：${res.status}`);
       }
-
+  
       const vpsList = await res.json();
+  
       if (Array.isArray(vpsList)) {
         renderVpsList(vpsList);
       } else {
-        vpsListContainer.innerHTML = "<p>目前沒有可顯示的 VPS。</p>";
+        alert("返回的数据格式不正确");
       }
     } catch (err) {
       console.error(err);
-      vpsListContainer.innerHTML = "<p>目前沒有可顯示的 VPS。</p>";
+      alert(err.message || "服务器错误");
     }
   }
+
 
   async function getVpsTraffic(vpsId) {
     try {
