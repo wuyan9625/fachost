@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const authForm = document.getElementById("auth-form");
   const sendCodeBtn = document.getElementById("send-code");
+  const API_BASE = "https://api.fachost.cloud";
 
   authForm?.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -12,11 +13,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (mode === "register") {
       const confirmPassword = document.getElementById("confirm-password").value.trim();
       const code = document.getElementById("verification-code").value.trim();
+      const name = document.getElementById("name")?.value.trim() || email; // name 可輸入或 fallback 為 email
 
       if (password !== confirmPassword) return alert("兩次密碼不一致！");
 
       // 驗證驗證碼
-      fetch("https://api.fachost.cloud/api/verify-code", {
+      fetch(`${API_BASE}/api/verify-code`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, code })
@@ -26,10 +28,10 @@ document.addEventListener("DOMContentLoaded", () => {
           if (!data.success) return alert(data.error || "驗證失敗");
 
           // 執行註冊
-          return fetch("https://api.fachost.cloud/api/register", {
+          return fetch(`${API_BASE}/api/register`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify({ email, password, name })  // ✅ 修正加上 name
           });
         })
         .then(res => res?.json?.())
@@ -44,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(err => alert("錯誤: " + err));
     } else {
       // 登入流程
-      fetch("https://api.fachost.cloud/api/login", {
+      fetch(`${API_BASE}/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
@@ -55,8 +57,6 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("jwt_token", data.token);
             localStorage.setItem("role", data.role);
             document.getElementById("auth-modal").classList.add("hidden");
-
-            // ✅ 統一跳轉到 plans.html
             window.location.href = "plans.html";
           } else {
             alert(data.error || "登入失敗");
@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const email = document.getElementById("email").value.trim();
     if (!email) return alert("請先輸入 Email！");
 
-    fetch("https://api.fachost.cloud/api/send-verification-code", {
+    fetch(`${API_BASE}/api/send-verification-code`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email })
