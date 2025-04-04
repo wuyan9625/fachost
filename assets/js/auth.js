@@ -2,17 +2,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const authForm = document.getElementById("auth-form");
   const sendCodeBtn = document.getElementById("send-code");
 
-  const API_BASE = "/api";  // ✅ 使用 Nginx 映射
+  const API_BASE = "/api";  // ✅ 經 Nginx 映射，無跨域問題
 
-  // ✅ 註冊 / 登入提交事件
+  // ✅ 表單提交事件
   authForm?.addEventListener("submit", async (e) => {
     e.preventDefault();
-
     const mode = window.getAuthMode?.() || "login";
 
     const email = document.getElementById("email")?.value.trim();
     const password = document.getElementById("password")?.value.trim();
-
     if (!email || !password) return alert("請填寫 Email 與密碼");
 
     if (mode === "register") {
@@ -33,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const verifyData = await verifyRes.json();
         if (!verifyData.success) return alert(verifyData.error || "驗證失敗");
 
-        // ✅ 註冊
+        // ✅ 註冊帳號
         const registerRes = await fetch(`${API_BASE}/register`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -48,18 +46,23 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       } catch (err) {
         console.error(err);
-        alert("發生錯誤，請稍後再試");
+        alert("伺服器錯誤，請稍後再試");
       }
     } else {
-      // ✅ 登入
+      // ✅ 登入流程
       try {
         const loginRes = await fetch(`${API_BASE}/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password })
         });
-        const loginData = await loginRes.json();
 
+        if (!loginRes.ok) {
+          const errData = await loginRes.json();
+          throw new Error(errData.error || `登入失敗（${loginRes.status}）`);
+        }
+
+        const loginData = await loginRes.json();
         if (loginData.token) {
           localStorage.setItem("jwt_token", loginData.token);
           localStorage.setItem("role", loginData.role);
@@ -70,7 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       } catch (err) {
         console.error(err);
-        alert("登入錯誤，請稍後再試");
+        alert(err.message || "登入錯誤，請稍後再試");
       }
     }
   });
@@ -90,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
       alert(data.message || data.error || "未知錯誤");
     } catch (err) {
       console.error(err);
-      alert("發送錯誤，請稍後再試");
+      alert("驗證碼發送錯誤，請稍後再試");
     }
   });
 });
