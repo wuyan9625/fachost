@@ -7,8 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const isAdmin = user?.role === "admin";
   const uid = user?.uid;
 
+  console.log("解析出的使用者資訊：", user);
   if (!token || !uid) {
-    alert("請重新登入");
+    alert("請重新登入（無法取得 UID）");
     return;
   }
 
@@ -20,8 +21,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function parseJwt(token) {
     try {
-      return JSON.parse(atob(token.split('.')[1]));
-    } catch {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(atob(base64).split('').map(c =>
+        '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+      ).join(''));
+      return JSON.parse(jsonPayload);
+    } catch (e) {
+      console.error("JWT 解碼錯誤：", e);
       return null;
     }
   }
@@ -34,11 +41,11 @@ document.addEventListener("DOMContentLoaded", () => {
       if (Array.isArray(vpsList)) {
         renderVpsList(vpsList);
       } else {
-        alert(vpsList.error || "無法加載 VPS");
+        alert(vpsList.error || "無法加載 VPS 資料");
       }
     } catch (err) {
       console.error(err);
-      alert("伺服器錯誤");
+      alert("伺服器錯誤，無法取得 VPS");
     }
   }
 
@@ -47,11 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const res = await fetch(`/api/vps/${vpsId}/traffic`);
       return await res.json();
     } catch {
-      return {
-        used_traffic: 0,
-        limit_traffic: 0,
-        remaining_traffic: 0
-      };
+      return { used_traffic: 0, limit_traffic: 0, remaining_traffic: 0 };
     }
   }
 
