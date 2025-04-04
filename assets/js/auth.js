@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const authForm = document.getElementById("auth-form");
   const sendCodeBtn = document.getElementById("send-code");
-  const API_BASE = "https://api.fachost.cloud";
 
   authForm?.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -13,12 +12,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (mode === "register") {
       const confirmPassword = document.getElementById("confirm-password").value.trim();
       const code = document.getElementById("verification-code").value.trim();
-      const name = document.getElementById("name")?.value.trim() || email; // name 可輸入或 fallback 為 email
+      const name = document.getElementById("name")?.value.trim() || email;
 
       if (password !== confirmPassword) return alert("兩次密碼不一致！");
 
-      // 驗證驗證碼
-      fetch(`${API_BASE}/api/verify-code`, {
+      // 先驗證驗證碼
+      fetch("/api/verify-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, code })
@@ -27,17 +26,17 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(data => {
           if (!data.success) return alert(data.error || "驗證失敗");
 
-          // 執行註冊
-          return fetch(`${API_BASE}/api/register`, {
+          // 驗證成功 → 註冊
+          return fetch("/api/register", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password, name })  // ✅ 修正加上 name
+            body: JSON.stringify({ email, password, name })
           });
         })
         .then(res => res?.json?.())
         .then(data => {
           if (data?.message === "註冊成功") {
-            alert("✅ 註冊成功");
+            alert("✅ 註冊成功！");
             document.getElementById("auth-modal").classList.add("hidden");
           } else {
             alert(data?.error || "註冊失敗");
@@ -46,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(err => alert("錯誤: " + err));
     } else {
       // 登入流程
-      fetch(`${API_BASE}/api/login`, {
+      fetch("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
@@ -70,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const email = document.getElementById("email").value.trim();
     if (!email) return alert("請先輸入 Email！");
 
-    fetch(`${API_BASE}/api/send-verification-code`, {
+    fetch("/api/send-verification-code", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email })
