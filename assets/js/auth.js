@@ -2,37 +2,42 @@ document.addEventListener("DOMContentLoaded", () => {
   const authForm = document.getElementById("auth-form");
   const sendCodeBtn = document.getElementById("send-code");
 
+  const API_BASE = "/api";  // ✅ 使用 Nginx 映射
+
+  // ✅ 註冊 / 登入提交事件
   authForm?.addEventListener("submit", async (e) => {
     e.preventDefault();
+
     const mode = window.getAuthMode?.() || "login";
 
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
+    const email = document.getElementById("email")?.value.trim();
+    const password = document.getElementById("password")?.value.trim();
 
-    if (!email || !password) return alert("請輸入完整資訊");
+    if (!email || !password) return alert("請填寫 Email 與密碼");
 
     if (mode === "register") {
-      const confirmPassword = document.getElementById("confirm-password").value.trim();
-      const code = document.getElementById("verification-code").value.trim();
+      const confirmPassword = document.getElementById("confirm-password")?.value.trim();
+      const code = document.getElementById("verification-code")?.value.trim();
       const name = document.getElementById("name")?.value.trim() || email;
 
-      if (password !== confirmPassword) return alert("兩次密碼不一致");
+      if (password !== confirmPassword) return alert("兩次密碼不一致！");
+      if (!code) return alert("請輸入驗證碼");
 
       try {
-        // 先驗證驗證碼
-        const verifyRes = await fetch("/api/verify-code", {
+        // ✅ 驗證驗證碼
+        const verifyRes = await fetch(`${API_BASE}/verify-code`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, code }),
+          body: JSON.stringify({ email, code })
         });
         const verifyData = await verifyRes.json();
         if (!verifyData.success) return alert(verifyData.error || "驗證失敗");
 
-        // 驗證成功 → 註冊
-        const registerRes = await fetch("/api/register", {
+        // ✅ 註冊
+        const registerRes = await fetch(`${API_BASE}/register`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password, name }),
+          body: JSON.stringify({ email, password, name })
         });
         const registerData = await registerRes.json();
         if (registerData.message === "註冊成功") {
@@ -42,15 +47,16 @@ document.addEventListener("DOMContentLoaded", () => {
           alert(registerData.error || "註冊失敗");
         }
       } catch (err) {
-        alert("註冊流程錯誤: " + err.message);
+        console.error(err);
+        alert("發生錯誤，請稍後再試");
       }
     } else {
-      // 登入流程
+      // ✅ 登入
       try {
-        const loginRes = await fetch("/api/login", {
+        const loginRes = await fetch(`${API_BASE}/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify({ email, password })
         });
         const loginData = await loginRes.json();
 
@@ -63,25 +69,28 @@ document.addEventListener("DOMContentLoaded", () => {
           alert(loginData.error || "登入失敗");
         }
       } catch (err) {
-        alert("登入錯誤: " + err.message);
+        console.error(err);
+        alert("登入錯誤，請稍後再試");
       }
     }
   });
 
+  // ✅ 發送驗證碼
   sendCodeBtn?.addEventListener("click", async () => {
-    const email = document.getElementById("email").value.trim();
+    const email = document.getElementById("email")?.value.trim();
     if (!email) return alert("請先輸入 Email");
 
     try {
-      const res = await fetch("/api/send-verification-code", {
+      const res = await fetch(`${API_BASE}/send-verification-code`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email })
       });
       const data = await res.json();
       alert(data.message || data.error || "未知錯誤");
     } catch (err) {
-      alert("發送錯誤: " + err.message);
+      console.error(err);
+      alert("發送錯誤，請稍後再試");
     }
   });
 });
