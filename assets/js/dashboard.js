@@ -1,3 +1,5 @@
+const API_BASE = "https://api.fachost.cloud";
+
 document.addEventListener("DOMContentLoaded", () => {
   const vpsListContainer = document.getElementById("vps-list");
   const trafficRankContainer = document.getElementById("traffic-ranking");
@@ -28,38 +30,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function fetchUserVpsList(uid) {
     try {
-      const res = await fetch(`/api/vps/${uid}`);
-      const text = await res.text();
-
+      const res = await fetch(`${API_BASE}/api/vps/${uid}`);
       if (!res.ok) {
-        console.warn("後端錯誤內容：", text);
-        alert(`❌ 無法取得 VPS 資料：${res.status}`);
-        return;
+        throw new Error("無法取得 VPS 資料");
       }
 
-      let vpsList;
-      try {
-        vpsList = JSON.parse(text);
-      } catch (jsonErr) {
-        console.error("回傳非 JSON 格式：", text);
-        alert("⚠️ 回傳格式錯誤，請聯絡管理員");
-        return;
-      }
-
+      const vpsList = await res.json();
       if (Array.isArray(vpsList)) {
         renderVpsList(vpsList);
       } else {
-        alert(vpsList.error || "無法加載 VPS 資料");
+        vpsListContainer.innerHTML = "<p>目前沒有可顯示的 VPS。</p>";
       }
     } catch (err) {
-      console.error("例外錯誤：", err);
-      alert("伺服器錯誤，請稍後再試");
+      console.error(err);
+      vpsListContainer.innerHTML = "<p>目前沒有可顯示的 VPS。</p>";
     }
   }
 
   async function getVpsTraffic(vpsId) {
     try {
-      const res = await fetch(`/api/vps/${vpsId}/traffic`);
+      const res = await fetch(`${API_BASE}/api/vps/${vpsId}/traffic`);
       return await res.json();
     } catch {
       return {
@@ -137,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
           time: mode === "auto" ? timeSelect.value : null
         };
 
-        const res = await fetch(`/api/vps/${vpsId}/set-refresh-mode`, {
+        const res = await fetch(`${API_BASE}/api/vps/${vpsId}/set-refresh-mode`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
@@ -153,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const time = e.target.value;
         const vpsId = e.target.dataset.vpsId;
 
-        const res = await fetch(`/api/vps/${vpsId}/set-refresh-mode`, {
+        const res = await fetch(`${API_BASE}/api/vps/${vpsId}/set-refresh-mode`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ mode: "auto", time })
@@ -168,7 +158,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.refreshIp = async function (vpsId) {
     if (!confirm("是否要刷新 IP？")) return;
 
-    const res = await fetch(`/api/vps/${vpsId}/refresh`, { method: "POST" });
+    const res = await fetch(`${API_BASE}/api/vps/${vpsId}/refresh`, { method: "POST" });
     const data = await res.json();
     if (res.ok) {
       alert("IP 已刷新：" + data.new_ip);
@@ -180,7 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function fetchAdminTrafficRanking() {
     try {
-      const res = await fetch("/api/admin/vps/traffic-ranking");
+      const res = await fetch(`${API_BASE}/api/admin/vps/traffic-ranking`);
       const list = await res.json();
 
       if (!Array.isArray(list)) return alert("無法載入排行榜");
