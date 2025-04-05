@@ -2,41 +2,27 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8" />
-  <title>Fachost 套餐方案</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>套餐方案 - Fachost</title>
   <link rel="stylesheet" href="assets/css/style.css" />
-  <script src="assets/js/app.js" defer></script>
-  <script src="assets/js/auth.js" defer></script>
   <script src="assets/js/plans.js" defer></script>
 </head>
 <body>
-  <!-- nav導航列 -->
   <nav class="navbar">
     <div class="logo">Fachost</div>
     <ul class="nav-links">
-      <li><a href="index.html" class="active">首頁</a></li>
-      <li><a href="plans.html">套餐</a></li>
-      <li><a href="#" id="control-panel">控制台</a></li>
-      <li><a href="#" id="login-btn">登錄</a></li>
-      <li><a href="#" id="lang-toggle">EN</a></li>
+      <li><a href="index.html">首頁</a></li>
+      <li><a href="plans.html" class="active">套餐</a></li>
+      <li><a href="dashboard.html">控制台</a></li>
+      <li><a href="admin.html">管理面板</a></li>
     </ul>
   </nav>
 
-  <main class="plans-page">
-    <h1>選擇您的雲主機方案</h1>
-
-    <div class="region-tabs">
-      <button class="tab-btn active" data-region="tw">Taiwan</button>
-      <button class="tab-btn" data-region="hk">HongKong</button>
-      <button class="tab-btn" data-region="us">North America</button>
+  <main>
+    <h1>🌐 套餐方案</h1>
+    <div class="plan-list" id="plan-list">
+      <!-- 方案會從 plans.js 動態載入 -->
     </div>
-
-    <div class="plans-container" id="plans-container"></div>
-
-    <div id="cart-items"></div>
-    <div id="total-price"></div>
-
-    <button id="checkout-btn">結帳</button>
   </main>
 
   <footer>
@@ -44,6 +30,5 @@
       <a href="https://t.me/+Bz8IaIDyF201M2Rl" target="_blank">Telegram 社群</a></p>
     <p>&copy; 2024 Fachost. All rights reserved.</p>
   </footer>
-
 </body>
 </html>
