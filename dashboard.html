@@ -2,34 +2,25 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8" />
-  <title>控制台 - Fachost</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>控制台 - Fachost</title>
   <link rel="stylesheet" href="assets/css/style.css" />
-  <script src="assets/js/app.js" defer></script>
-  <script src="assets/js/auth.js" defer></script>
   <script src="assets/js/dashboard.js" defer></script>
 </head>
 <body>
   <nav class="navbar">
     <div class="logo">Fachost</div>
     <ul class="nav-links">
-      <li><a href="index.html" class="active">首頁</a></li>
+      <li><a href="index.html">首頁</a></li>
       <li><a href="plans.html">套餐</a></li>
-      <li><a href="#" id="control-panel">控制台</a></li>
-      <li><a href="#" id="login-btn">登錄</a></li>
-      <li><a href="#" id="logout-btn" style="display: none;">登出</a></li>
-      <li><a href="#" id="lang-toggle">EN</a></li>
+      <li><a href="dashboard.html" class="active">控制台</a></li>
+      <li><a href="admin.html">管理面板</a></li>
     </ul>
   </nav>
 
-  <main class="dashboard">
-    <h1>Server</h1>
-
-    <div id="loading" style="display:none;">載入中...</div>
-
-    <div id="vps-list">
-      <!-- VPS 資訊與控制按鈕會由 JS 載入 -->
-    </div>
+  <main>
+    <h1>☁️ 我的 VPS 控制台</h1>
+    <div id="vps-container" class="vps-list"></div>
   </main>
 
   <footer>
