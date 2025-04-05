@@ -1,34 +1,20 @@
-<!DOCTYPE html>
-<html lang="zh">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>套餐方案 - Fachost</title>
-  <link rel="stylesheet" href="assets/css/style.css" />
-  <script src="assets/js/plans.js" defer></script>
-</head>
-<body>
-  <nav class="navbar">
-    <div class="logo">Fachost</div>
-    <ul class="nav-links">
-      <li><a href="index.html">首頁</a></li>
-      <li><a href="plans.html" class="active">套餐</a></li>
-      <li><a href="dashboard.html">控制台</a></li>
-      <li><a href="admin.html">管理面板</a></li>
-    </ul>
-  </nav>
-
-  <main>
-    <h1>🌐 套餐方案</h1>
-    <div class="plan-list" id="plan-list">
-      <!-- 方案會從 plans.js 動態載入 -->
-    </div>
-  </main>
-
-  <footer>
-    <p>聯絡我們：<a href="mailto:wuyan9625@gmail.com">wuyan9625@gmail.com</a> |
-      <a href="https://t.me/+Bz8IaIDyF201M2Rl" target="_blank">Telegram 社群</a></p>
-    <p>&copy; 2024 Fachost. All rights reserved.</p>
-  </footer>
-</body>
-</html>
+document.addEventListener("DOMContentLoaded", function () {
+  fetch("/api/plans")
+    .then(response => response.json())
+    .then(data => {
+      const planList = document.getElementById("plan-list");
+      data.plans.forEach(plan => {
+        const planCard = document.createElement("div");
+        planCard.classList.add("plan-card");
+        planCard.innerHTML = `
+          <h3>${plan.name}</h3>
+          <p>${plan.description}</p>
+          <p>價格：${plan.price}元</p>
+          <p>剩餘：${plan.stock}</p>
+          <button class="buy-button" data-plan-id="${plan.id}" data-server-id="${plan.server_id}">立即購買</button>
+        `;
+        planList.appendChild(planCard);
+      });
+    })
+    .catch(error => console.log("Error fetching plans:", error));
+});
