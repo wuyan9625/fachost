@@ -1,73 +1,28 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const loginBtn = document.getElementById("login-btn");
-  const logoutBtn = document.getElementById("logout-btn");
-  const modal = document.getElementById("auth-modal");
-  const closeBtn = document.getElementById("close-modal");
-  const switchLink = document.getElementById("switch-to-register");
-  const authTitle = document.getElementById("auth-title");
-  const confirmGroup = document.getElementById("confirm-password-group");
-  const verificationGroup = document.getElementById("verification-group");
-  const submitBtn = document.getElementById("submit-auth");
   const controlPanelBtn = document.getElementById("control-panel");
+  const loginBtn = document.getElementById("login-btn");
+  const langToggle = document.getElementById("lang-toggle");
 
-  let mode = "login"; // 初始為登入
+  const token = localStorage.getItem("token");
 
-  loginBtn?.addEventListener("click", () => {
-    modal.classList.remove("hidden");
-    setAuthMode("login");
-  });
+  if (token) {
+    // 已登入狀態：顯示控制台、隱藏登入
+    loginBtn.classList.add("hidden");
+    controlPanelBtn.classList.remove("hidden");
 
-  logoutBtn?.addEventListener("click", () => {
-    localStorage.clear();
-    alert("已登出");
-    window.location.href = "/";
-  });
-
-  closeBtn?.addEventListener("click", () => {
-    modal.classList.add("hidden");
-    setAuthMode("login");
-  });
-
-  switchLink?.addEventListener("click", (e) => {
-    e.preventDefault();
-    setAuthMode(mode === "login" ? "register" : "login");
-  });
-
-  window.addEventListener("click", (e) => {
-    if (e.target === modal) {
-      modal.classList.add("hidden");
-      setAuthMode("login");
-    }
-  });
-
-  function setAuthMode(type) {
-    mode = type;
-    if (type === "register") {
-      authTitle.textContent = "註冊";
-      confirmGroup.classList.remove("hidden");
-      verificationGroup.classList.remove("hidden");
-      submitBtn.textContent = "註冊";
-    } else {
-      authTitle.textContent = "登入";
-      confirmGroup.classList.add("hidden");
-      verificationGroup.classList.add("hidden");
-      submitBtn.textContent = "登入";
-    }
+    controlPanelBtn.onclick = () => {
+      window.location.href = "/dashboard.html"; // 控制台頁面
+    };
+  } else {
+    // 未登入狀態
+    loginBtn.classList.remove("hidden");
+    controlPanelBtn.classList.add("hidden");
   }
 
-  // ✅ 提供 auth.js 使用
-  window.getAuthMode = () => mode;
-
-  // ✅ 控制台按鈕根據角色跳轉
-  controlPanelBtn?.addEventListener("click", (e) => {
-    e.preventDefault();
-    const role = localStorage.getItem("role");
-    if (role === "admin") {
-      window.location.href = "admin-dashboard.html";
-    } else if (role === "user") {
-      window.location.href = "dashboard.html";
-    } else {
-      alert("請先登入帳號！");
-    }
-  });
+  // 🌐 多語言切換（目前只有 EN / ZH 切換示意）
+  langToggle.onclick = () => {
+    const current = langToggle.textContent.trim();
+    langToggle.textContent = current === "EN" ? "中文" : "EN";
+    alert("多語系切換功能尚未實作");
+  };
 });
