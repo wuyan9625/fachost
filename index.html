@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fachost - 高性能云主机</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Fachost</div>
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">首页</a></li>
+            <li><a href="plans.html">套餐</a></li>
+            <li><a href="orders.html">订单查询</a></li>
+            <li><a href="console.html">控制台</a></li>
+            <li><a href="#" id="login-btn">登录</a></li>
+            <li><a href="#" id="register-btn">注册</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero">
+        <h1>高性能、安全稳定的云主机服务</h1>
+        <p>Fachost 提供全球高速节点，弹性扩充，价格透明。</p>
+        <button id="register-btn">立即注册</button>
+    </header>
+
+    <div id="auth-modal" class="modal hidden">
+        <div class="modal-content">
+            <div id="login-form">
+                <h2>登录</h2>
+                <form id="login-form">
+                    <input type="email" id="login-email" placeholder="邮箱" required>
+                    <input type="password" id="login-password" placeholder="密码" required>
+                    <button type="submit">登录</button>
+                    <p>没有账号？ <span id="switch-to-register">注册</span></p>
+                </form>
+            </div>
+
+            <div id="register-form" class="hidden">
+                <h2>注册</h2>
+                <form id="register-form">
+                    <input type="email" id="register-email" placeholder="邮箱" required>
+                    <input type="password" id="register-password" placeholder="密码" required>
+                    <button type="submit">注册</button>
+                    <p>已有账号？ <span id="switch-to-login">登录</span></p>
+                </form>
+            </div>
+            <button id="close-modal">关闭</button>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
