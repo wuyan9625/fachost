@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员 - 套餐管理</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="plans.html">套餐</a></li>
+                <li><a href="orders.html">订单</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2>套餐管理</h2>
+        
+        <!-- 创建套餐表单 -->
+        <form id="create-plan-form">
+            <label for="plan-name">套餐名称:</label>
+            <input type="text" id="plan-name" name="name" required>
+
+            <label for="plan-description">套餐描述:</label>
+            <textarea id="plan-description" name="description"></textarea>
+
+            <label for="plan-price">套餐价格:</label>
+            <input type="number" id="plan-price" name="price" required>
+
+            <label for="plan-duration">套餐时长:</label>
+            <select id="plan-duration" name="duration">
+                <option value="monthly">月度</option>
+                <option value="quarterly">季度</option>
+                <option value="yearly">年度</option>
+            </select>
+
+            <label for="plan-total-vps">套餐总量:</label>
+            <input type="number" id="plan-total-vps" name="total_vps" required>
+
+            <button type="submit">创建套餐</button>
+        </form>
+
+        <h3>更新套餐</h3>
+        <!-- 更新套餐表单 -->
+        <form id="update-plan-form">
+            <label for="plan-id">套餐ID:</label>
+            <input type="number" id="plan-id" name="plan_id" required>
+
+            <label for="new-price">新价格:</label>
+            <input type="number" id="new-price" name="price" required>
+
+            <label for="new-total-vps">新总量:</label>
+            <input type="number" id="new-total-vps" name="total_vps" required>
+
+            <button type="submit">更新套餐</button>
+        </form>
+    </main>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
