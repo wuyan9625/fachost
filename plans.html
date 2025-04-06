@@ -3,25 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VPS 套餐</title>
+    <title>套餐</title>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="logo">Fachost</div>
-        <ul class="nav-links">
-            <li><a href="index.html">首页</a></li>
-            <li><a href="orders.html">订单查询</a></li>
-            <li><a href="console.html">控制台</a></li>
-            <li><a href="plans.html" class="active">套餐</a></li>
-            <li><a href="#" id="logout-btn">退出</a></li>
-        </ul>
-    </nav>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="orders.html">订单</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <div id="plans-container">
-        <h2>选择您的 VPS 套餐</h2>
-        <div id="plans-list"></div>
-    </div>
+    <main>
+        <h2>选择套餐</h2>
+
+        <div id="plan-list">
+            <!-- 套餐列表会动态加载在这里 -->
+        </div>
+    </main>
 
     <script src="assets/js/main.js"></script>
 </body>
