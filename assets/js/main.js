@@ -49,3 +49,6 @@ document.getElementById('update-plan-form').addEventListener('submit', function(
     })
     .catch(error => console.error('Error:', error));
 });
+
+// 获取套餐列表并显示
+fetch('/api/vps/get-plans')  // 假设有一个获取
