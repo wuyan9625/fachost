@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VPS 控制台</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Fachost</div>
+        <ul class="nav-links">
+            <li><a href="index.html">首页</a></li>
+            <li><a href="plans.html">套餐</a></li>
+            <li><a href="orders.html">订单查询</a></li>
+            <li><a href="console.html" class="active">控制台</a></li>
+            <li><a href="#" id="logout-btn">退出</a></li>
+        </ul>
+    </nav>
+
+    <div id="vps-info">
+        <h2>我的 VPS 信息</h2>
+        <div id="vps-details"></div>
+        <button id="refresh-ip-btn">刷新我的 IP</button>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
