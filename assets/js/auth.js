@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (isLogin) {
       // 登入
       try {
-        const res = await fetch('https://fachost.cloud/api/login', {
+        const res = await fetch('http://fachost.cloud/api/auth/login', {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password }),
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (password !== confirm) return alert("兩次密碼不一致");
 
       try {
-        const res = await fetch('https://fachost.cloud/api/register', {
+        const res = await fetch('http://fachost.cloud/api/auth/register', {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password, confirm, code }),
