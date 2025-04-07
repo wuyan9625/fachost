@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const password = document.getElementById('login-password').value;
 
         try {
-            const response = await fetch('https://api.fachost.cloud/api/auth/login', {
+            const response = await fetch('https://api.fachost.cloud/api/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const password = document.getElementById('register-password').value;
 
         try {
-            const response = await fetch('https://api.fachost.cloud/api/auth/register', {
+            const response = await fetch('https://api.fachost.cloud/api/api/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
