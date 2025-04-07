@@ -1,19 +1,37 @@
-// 确保文档加载完后执行
 document.addEventListener('DOMContentLoaded', function () {
 
-    // 显示注册表单
+    // 顯示註冊表單
     document.getElementById('switch-to-register').addEventListener('click', function() {
         document.getElementById('login-form-container').classList.add('hidden');
         document.getElementById('register-form-container').classList.remove('hidden');
     });
 
-    // 显示登录表单
+    // 顯示登錄表單
     document.getElementById('switch-to-login').addEventListener('click', function() {
         document.getElementById('register-form-container').classList.add('hidden');
         document.getElementById('login-form-container').classList.remove('hidden');
     });
 
-    // 登录表单提交
+    // 登錄按鈕點擊事件
+    document.getElementById('login-btn').addEventListener('click', function() {
+        document.getElementById('auth-modal').classList.remove('hidden');
+        document.getElementById('login-form-container').classList.remove('hidden');
+        document.getElementById('register-form-container').classList.add('hidden');
+    });
+
+    // 註冊按鈕點擊事件
+    document.getElementById('register-btn').addEventListener('click', function() {
+        document.getElementById('auth-modal').classList.remove('hidden');
+        document.getElementById('register-form-container').classList.remove('hidden');
+        document.getElementById('login-form-container').classList.add('hidden');
+    });
+
+    // 關閉模態窗口
+    document.getElementById('close-modal').addEventListener('click', function() {
+        document.getElementById('auth-modal').classList.add('hidden');
+    });
+
+    // 登錄表單提交
     document.getElementById('login-form').addEventListener('submit', function(event) {
         event.preventDefault();
         const email = document.getElementById('login-email').value;
@@ -39,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(error => console.error('Error:', error));
     });
 
-    // 注册表单提交
+    // 註冊表單提交
     document.getElementById('register-form').addEventListener('submit', function(event) {
         event.preventDefault();
         const email = document.getElementById('register-email').value;
