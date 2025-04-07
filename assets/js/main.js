@@ -1,4 +1,4 @@
-// 创建套餐
+// 处理创建套餐表单
 document.getElementById('create-plan-form').addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -107,3 +107,76 @@ function updatePlanStock(planId) {
     const availableVps = planDiv.querySelector('.available-vps');
     availableVps.textContent = parseInt(availableVps.textContent) - 1;
 }
+
+// 从本地存储或其他地方获取当前用户 ID
+function getUserId() {
+    return localStorage.getItem('userId'); // 假设从 localStorage 获取用户 ID
+}
+
+// 登录与注册模态框切换
+document.getElementById('switch-to-register').addEventListener('click', function() {
+    document.getElementById('login-form').classList.add('hidden');
+    document.getElementById('register-form').classList.remove('hidden');
+});
+
+document.getElementById('switch-to-login').addEventListener('click', function() {
+    document.getElementById('register-form').classList.add('hidden');
+    document.getElementById('login-form').classList.remove('hidden');
+});
+
+// 登录表单提交
+document.getElementById('login-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+    // 发送登录请求
+    fetch('/api/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            localStorage.setItem('userId', data.userId);  // 假设后端返回了用户 ID
+            alert('登录成功');
+            window.location.href = 'console.html';  // 跳转到控制台页面
+        } else {
+            alert('登录失败: ' + data.message);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+});
+
+// 注册表单提交
+document.getElementById('register-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const email = document.getElementById('register-email').value;
+    const password = document.getElementById('register-password').value;
+    // 发送注册请求
+    fetch('/api/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('注册成功');
+            window.location.href = 'index.html';  // 注册成功后返回首页
+        } else {
+            alert('注册失败: ' + data.message);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+});
+
+// 退出登录
+document.getElementById('logout-btn').addEventListener('click', function() {
+    localStorage.removeItem('userId');  // 删除用户 ID
+    window.location.href = 'index.html';  // 跳转到首页
+});
