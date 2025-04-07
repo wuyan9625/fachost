@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const password = document.getElementById('login-password').value;
 
         try {
-            const response = await fetch('http://api.fachost.cloud/api/auth/login', {
+            const response = await fetch('https://api.fachost.cloud/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const password = document.getElementById('register-password').value;
 
         try {
-            const response = await fetch('http://api.fachost.cloud/api/auth/register', {
+            const response = await fetch('https://api.fachost.cloud/api/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         try {
-            const response = await fetch('http://api.fachost.cloud/api/vps/create-plan', {
+            const response = await fetch('https://api.fachost.cloud/api/vps/create-plan', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(planData)
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const planId = document.getElementById('plan-id').value;
 
         try {
-            const response = await fetch(`http://api.fachost.cloud/api/vps/update-plan/${planId}`, {
+            const response = await fetch(`https://api.fachost.cloud/api/vps/update-plan/${planId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(planData)
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // 获取套餐列表并显示
     async function fetchPlans() {
         try {
-            const response = await fetch('http://api.fachost.cloud/api/vps/get-plans');
+            const response = await fetch('https://api.fachost.cloud/api/vps/get-plans');
             const data = await response.json();
             const planListDiv = document.getElementById('plan-list');
             data.plans.forEach(plan => {
@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         try {
-            const response = await fetch('http://api.fachost.cloud/api/vps/create-vps', {
+            const response = await fetch('https://api.fachost.cloud/api/vps/create-vps', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
