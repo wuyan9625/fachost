@@ -32,20 +32,20 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // 登錄表單提交
-    document.getElementById('login-form').addEventListener('submit', function(event) {
+    document.getElementById('login-form').addEventListener('submit', async function(event) {
         event.preventDefault();
         const email = document.getElementById('login-email').value;
         const password = document.getElementById('login-password').value;
 
-        fetch('https://api.fachost.cloud/api/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email, password })
-        })
-        .then(response => response.json())
-        .then(data => {
+        try {
+            const response = await fetch('https://api.fachost.cloud/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await response.json();
             if (data.success) {
                 localStorage.setItem('userId', data.userId);
                 alert('登录成功');
@@ -53,33 +53,35 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 alert('登录失败: ' + data.message);
             }
-        })
-        .catch(error => console.error('Error:', error));
+        } catch (error) {
+            console.error('Error:', error);
+        }
     });
 
     // 註冊表單提交
-    document.getElementById('register-form').addEventListener('submit', function(event) {
+    document.getElementById('register-form').addEventListener('submit', async function(event) {
         event.preventDefault();
         const email = document.getElementById('register-email').value;
         const password = document.getElementById('register-password').value;
 
-        fetch('https://api.fachost.cloud/api/auth/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email, password })
-        })
-        .then(response => response.json())
-        .then(data => {
+        try {
+            const response = await fetch('https://api.fachost.cloud/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await response.json();
             if (data.success) {
                 alert('注册成功');
                 window.location.href = 'index.html';  // 注册成功后返回首页
             } else {
                 alert('注册失败: ' + data.message);
             }
-        })
-        .catch(error => console.error('Error:', error));
+        } catch (error) {
+            console.error('Error:', error);
+        }
     });
 
     // 退出登录
@@ -89,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // 创建套餐表单提交
-    document.getElementById('create-plan-form').addEventListener('submit', function(event) {
+    document.getElementById('create-plan-form').addEventListener('submit', async function(event) {
         event.preventDefault();
 
         const planData = {
@@ -100,20 +102,21 @@ document.addEventListener('DOMContentLoaded', function () {
             total_vps: parseInt(document.getElementById('plan-total-vps').value)
         };
 
-        fetch('https://api.fachost.cloud/api/vps/create-plan', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(planData)
-        })
-        .then(response => response.json())
-        .then(data => {
+        try {
+            const response = await fetch('https://api.fachost.cloud/api/vps/create-plan', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(planData)
+            });
+            const data = await response.json();
             alert(data.message);
-        })
-        .catch(error => console.error('Error:', error));
+        } catch (error) {
+            console.error('Error:', error);
+        }
     });
 
     // 更新套餐
-    document.getElementById('update-plan-form').addEventListener('submit', function(event) {
+    document.getElementById('update-plan-form').addEventListener('submit', async function(event) {
         event.preventDefault();
 
         const planData = {
@@ -123,22 +126,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const planId = document.getElementById('plan-id').value;
 
-        fetch(`https://api.fachost.cloud/api/vps/update-plan/${planId}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(planData)
-        })
-        .then(response => response.json())
-        .then(data => {
+        try {
+            const response = await fetch(`https://api.fachost.cloud/api/vps/update-plan/${planId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(planData)
+            });
+            const data = await response.json();
             alert(data.message);
-        })
-        .catch(error => console.error('Error:', error));
+        } catch (error) {
+            console.error('Error:', error);
+        }
     });
 
     // 获取套餐列表并显示
-    fetch('https://api.fachost.cloud/api/vps/get-plans')
-        .then(response => response.json())
-        .then(data => {
+    async function fetchPlans() {
+        try {
+            const response = await fetch('https://api.fachost.cloud/api/vps/get-plans');
+            const data = await response.json();
             const planListDiv = document.getElementById('plan-list');
             data.plans.forEach(plan => {
                 const planDiv = document.createElement('div');
@@ -154,11 +159,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 `;
                 planListDiv.appendChild(planDiv);
             });
-        })
-        .catch(error => console.error("Error:", error));
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    fetchPlans();
 
     // 购买 VPS
-    window.purchaseVps = function(planId) {
+    window.purchaseVps = async function(planId) {
         const userId = getUserId();
 
         const data = {
@@ -166,21 +175,22 @@ document.addEventListener('DOMContentLoaded', function () {
             plan_id: planId
         };
 
-        fetch('https://api.fachost.cloud/api/vps/create-vps', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.message === "VPS 创建成功") {
+        try {
+            const response = await fetch('https://api.fachost.cloud/api/vps/create-vps', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            if (result.message === "VPS 创建成功") {
                 alert("购买成功！");
                 updatePlanStock(planId);
             } else {
-                alert("购买失败：" + data.message);
+                alert("购买失败：" + result.message);
             }
-        })
-        .catch(error => console.error("Error:", error));
+        } catch (error) {
+            console.error("Error:", error);
+        }
     };
 
     // 更新套餐库存
