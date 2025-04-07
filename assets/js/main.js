@@ -11,7 +11,7 @@ document.getElementById('create-plan-form').addEventListener('submit', function(
     };
 
     // 发送请求到后端创建套餐
-    fetch('/api/vps/create-plan', {
+    fetch('https://api.fachost.cloud/api/vps/create-plan', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -36,7 +36,7 @@ document.getElementById('update-plan-form').addEventListener('submit', function(
 
     const planId = document.getElementById('plan-id').value;
 
-    fetch(`/api/vps/update-plan/${planId}`, {
+    fetch(`https://api.fachost.cloud/api/vps/update-plan/${planId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -51,7 +51,7 @@ document.getElementById('update-plan-form').addEventListener('submit', function(
 });
 
 // 获取套餐列表并显示
-fetch('/api/vps/get-plans')  // 假设有一个获取套餐列表的 API
+fetch('https://api.fachost.cloud/api/vps/get-plans')  // 假设有一个获取套餐列表的 API
     .then(response => response.json())
     .then(data => {
         const planListDiv = document.getElementById('plan-list');
@@ -81,7 +81,7 @@ function purchaseVps(planId) {
     };
 
     // 向后端发送购买请求
-    fetch('/api/vps/create-vps', {
+    fetch('https://api.fachost.cloud/api/vps/create-vps', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -130,7 +130,7 @@ document.getElementById('login-form').addEventListener('submit', function(event)
     const email = document.getElementById('login-email').value;
     const password = document.getElementById('login-password').value;
     // 发送登录请求
-    fetch('/api/login', {
+    fetch('https://api.fachost.cloud/api/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -156,7 +156,7 @@ document.getElementById('register-form').addEventListener('submit', function(eve
     const email = document.getElementById('register-email').value;
     const password = document.getElementById('register-password').value;
     // 发送注册请求
-    fetch('/api/register', {
+    fetch('https://api.fachost.cloud/api/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
