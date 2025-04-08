@@ -17,32 +17,35 @@ body {
   z-index: 9999;
 }
 
-/* ========= 彈窗內容區塊 ========= */
+/* ========= 登入/註冊卡片視覺強化 ========= */
 .modal-content {
-  background-color: #fff;
-  padding: 30px;
+  background-color: #ffffff;
+  padding: 40px 30px;
   border-radius: 12px;
-  max-width: 420px;
+  max-width: 400px;
   width: 90%;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
   position: relative;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .modal-content h2 {
-  margin-bottom: 20px;
-  font-size: 24px;
+  margin-bottom: 24px;
+  font-size: 26px;
+  font-weight: 600;
+  color: #333;
   text-align: center;
 }
 
 .modal-content form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 18px;
 }
 
 .modal-content input {
-  padding: 12px;
-  font-size: 16px;
+  padding: 12px 16px;
+  font-size: 15px;
   border: 1px solid #ccc;
   border-radius: 8px;
   outline: none;
@@ -53,7 +56,6 @@ body {
   border-color: #007bff;
 }
 
-/* ========= 驗證碼與按鈕並排區 ========= */
 .form-group {
   display: flex;
   gap: 10px;
@@ -64,16 +66,20 @@ body {
   flex: 1;
 }
 
-/* ========= 按鈕樣式 ========= */
+/* ========= 按鈕改進 ========= */
+.btn, .btn-outline {
+  font-size: 15px;
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
 .btn {
   background-color: #007bff;
-  color: white;
-  padding: 12px;
-  font-size: 16px;
+  color: #fff;
   border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s;
 }
 
 .btn:hover {
@@ -81,77 +87,69 @@ body {
 }
 
 .btn-outline {
-  background-color: white;
-  color: #007bff;
+  background-color: transparent;
   border: 1px solid #007bff;
-  padding: 10px;
-  font-size: 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background-color 0.2s;
+  color: #007bff;
 }
 
 .btn-outline:hover {
   background-color: #e6f0ff;
 }
 
+/* ========= 關閉按鈕更現代 ========= */
+.close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 20px;
+  background: none;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  color: #444;
+}
+
 /* ========= 註冊 / 登入切換連結 ========= */
-.link {
+.switch-text {
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+}
+
+.switch-text .link {
   color: #007bff;
   cursor: pointer;
   text-decoration: underline;
 }
 
-.link:hover {
+.switch-text .link:hover {
   color: #0056b3;
 }
 
-.switch-text {
-  font-size: 14px;
-  text-align: center;
-  color: #666;
-}
-
-/* ========= 關閉按鈕 ========= */
-.close-btn {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: transparent;
-  border: none;
-  font-size: 22px;
-  cursor: pointer;
-  color: #aaa;
-}
-
-.close-btn:hover {
-  color: #555;
-}
-
-/* ========= 隱藏用 ========= */
+/* ========= 隱藏 & 鎖定按鈕樣式 ========= */
 .hidden {
   display: none;
 }
 
-/* ========= 鎖定驗證碼按鈕樣式 ========= */
 .disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   pointer-events: none;
 }
 
-/* ========= 響應式手機支援 ========= */
-@media (max-width: 600px) {
+/* ========= 響應式支援 ========= */
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 25px 20px;
+  }
+
   .form-group {
     flex-direction: column;
-    align-items: stretch;
   }
 
   .form-group button {
     width: 100%;
-  }
-
-  .modal-content {
-    padding: 20px;
   }
 }
