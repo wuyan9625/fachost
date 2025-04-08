@@ -265,13 +265,7 @@ body {
   opacity: 0.8;
 }
 
-/* 手機版 Footer */
-@media (max-width: 600px) {
-  .footer-container {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-}
+
 
 /* ========= 額外工具樣式 ========= */
 .hidden {
@@ -315,5 +309,10 @@ body {
 
   .modal-content {
     padding: 25px 20px;
+  }
+  /* 手機版 Footer */
+  .footer-container {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
