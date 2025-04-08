@@ -1,38 +1,38 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     // 顯示註冊表單
-    document.getElementById('switch-to-register').addEventListener('click', function() {
+    document.getElementById('switch-to-register').addEventListener('click', function () {
         document.getElementById('login-form-container').classList.add('hidden');
         document.getElementById('register-form-container').classList.remove('hidden');
     });
 
     // 顯示登錄表單
-    document.getElementById('switch-to-login').addEventListener('click', function() {
+    document.getElementById('switch-to-login').addEventListener('click', function () {
         document.getElementById('register-form-container').classList.add('hidden');
         document.getElementById('login-form-container').classList.remove('hidden');
     });
 
     // 登錄按鈕點擊事件
-    document.getElementById('login-btn').addEventListener('click', function() {
+    document.getElementById('login-btn').addEventListener('click', function () {
         document.getElementById('auth-modal').classList.remove('hidden');
         document.getElementById('login-form-container').classList.remove('hidden');
         document.getElementById('register-form-container').classList.add('hidden');
     });
 
     // 註冊按鈕點擊事件
-    document.getElementById('register-btn').addEventListener('click', function() {
+    document.getElementById('register-btn').addEventListener('click', function () {
         document.getElementById('auth-modal').classList.remove('hidden');
         document.getElementById('register-form-container').classList.remove('hidden');
         document.getElementById('login-form-container').classList.add('hidden');
     });
 
     // 關閉模態窗口
-    document.getElementById('close-modal').addEventListener('click', function() {
+    document.getElementById('close-modal').addEventListener('click', function () {
         document.getElementById('auth-modal').classList.add('hidden');
     });
 
     // 登錄表單提交
-    document.getElementById('login-form').addEventListener('submit', async function(event) {
+    document.getElementById('login-form').addEventListener('submit', async function (event) {
         event.preventDefault();
         const email = document.getElementById('login-email').value;
         const password = document.getElementById('login-password').value;
@@ -46,23 +46,46 @@ document.addEventListener('DOMContentLoaded', function () {
                 body: JSON.stringify({ email, password })
             });
             const data = await response.json();
-            if (data.success) {
-                localStorage.setItem('userId', data.userId);
-                alert('登录成功');
-                window.location.href = 'console.html';  // 跳转到控制台页面
+            if (data.token) {
+                localStorage.setItem('userId', data.user.id);
+                localStorage.setItem('token', data.token);
+                alert('登入成功');
+                window.location.href = 'console.html';
             } else {
-                alert('登录失败: ' + data.message);
+                alert('登入失敗: ' + data.message);
             }
         } catch (error) {
             console.error('Error:', error);
         }
     });
 
+    // 發送註冊驗證碼
+    document.getElementById('send-code-btn').addEventListener('click', async function () {
+        const email = document.getElementById('register-email').value;
+        if (!email) {
+            alert('請先輸入 Email');
+            return;
+        }
+
+        try {
+            const response = await fetch('https://api.fachost.cloud/api/api/auth/send-verification', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
+            });
+            const data = await response.json();
+            alert(data.message);
+        } catch (error) {
+            alert('發送驗證碼失敗：' + error.message);
+        }
+    });
+
     // 註冊表單提交
-    document.getElementById('register-form').addEventListener('submit', async function(event) {
+    document.getElementById('register-form').addEventListener('submit', async function (event) {
         event.preventDefault();
         const email = document.getElementById('register-email').value;
         const password = document.getElementById('register-password').value;
+        const code = document.getElementById('register-code').value;
 
         try {
             const response = await fetch('https://api.fachost.cloud/api/api/auth/register', {
@@ -70,14 +93,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({ email, password, code })
             });
             const data = await response.json();
-            if (data.success) {
-                alert('注册成功');
-                window.location.href = 'index.html';  // 注册成功后返回首页
+            if (data.message === "註冊成功") {
+                alert('註冊成功，請登入');
+                window.location.href = 'index.html';
             } else {
-                alert('注册失败: ' + data.message);
+                alert('註冊失敗: ' + data.message);
             }
         } catch (error) {
             console.error('Error:', error);
@@ -85,13 +108,14 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // 退出登录
-    document.getElementById('logout-btn').addEventListener('click', function() {
+    document.getElementById('logout-btn').addEventListener('click', function () {
         localStorage.removeItem('userId');
-        window.location.href = 'index.html';  // 跳转到首页
+        localStorage.removeItem('token');
+        window.location.href = 'index.html';
     });
 
-    // 创建套餐表单提交
-    document.getElementById('create-plan-form').addEventListener('submit', async function(event) {
+    // 創建套餐
+    document.getElementById('create-plan-form').addEventListener('submit', async function (event) {
         event.preventDefault();
 
         const planData = {
@@ -103,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         try {
-            const response = await fetch('https://api.fachost.cloud/api/vps/create-plan', {
+            const response = await fetch('https://api.fachost.cloud/api/api/vps/create-plan', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(planData)
@@ -116,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // 更新套餐
-    document.getElementById('update-plan-form').addEventListener('submit', async function(event) {
+    document.getElementById('update-plan-form').addEventListener('submit', async function (event) {
         event.preventDefault();
 
         const planData = {
@@ -127,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const planId = document.getElementById('plan-id').value;
 
         try {
-            const response = await fetch(`https://api.fachost.cloud/api/vps/update-plan/${planId}`, {
+            const response = await fetch(`https://api.fachost.cloud/api/api/vps/update-plan/${planId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(planData)
@@ -139,10 +163,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // 获取套餐列表并显示
+    // 取得套餐
     async function fetchPlans() {
         try {
-            const response = await fetch('https://api.fachost.cloud/api/vps/get-plans');
+            const response = await fetch('https://api.fachost.cloud/api/api/vps/get-plans');
             const data = await response.json();
             const planListDiv = document.getElementById('plan-list');
             data.plans.forEach(plan => {
@@ -152,10 +176,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 planDiv.innerHTML = `
                     <h3>${plan.name}</h3>
                     <p>描述：${plan.description}</p>
-                    <p>价格：${plan.price}</p>
-                    <p>总量：${plan.total_vps}</p>
-                    <p>可用：${plan.available_vps}</p>
-                    <button onclick="purchaseVps(${plan.id})">购买</button>
+                    <p>價格：${plan.price}</p>
+                    <p>總量：${plan.total_vps}</p>
+                    <p class="available-vps">可用：${plan.available_vps}</p>
+                    <button onclick="purchaseVps(${plan.id})">購買</button>
                 `;
                 planListDiv.appendChild(planDiv);
             });
@@ -166,8 +190,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     fetchPlans();
 
-    // 购买 VPS
-    window.purchaseVps = async function(planId) {
+    // 購買 VPS
+    window.purchaseVps = async function (planId) {
         const userId = getUserId();
 
         const data = {
@@ -176,31 +200,30 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         try {
-            const response = await fetch('https://api.fachost.cloud/api/vps/create-vps', {
+            const response = await fetch('https://api.fachost.cloud/api/api/vps/create-vps', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             });
             const result = await response.json();
             if (result.message === "VPS 创建成功") {
-                alert("购买成功！");
+                alert("購買成功！");
                 updatePlanStock(planId);
             } else {
-                alert("购买失败：" + result.message);
+                alert("購買失敗：" + result.message);
             }
         } catch (error) {
             console.error("Error:", error);
         }
     };
 
-    // 更新套餐库存
+    // 更新庫存數量
     function updatePlanStock(planId) {
         const planDiv = document.querySelector(`.plan-item[data-plan-id="${planId}"]`);
         const availableVps = planDiv.querySelector('.available-vps');
         availableVps.textContent = parseInt(availableVps.textContent) - 1;
     }
 
-    // 从本地存储获取当前用户 ID
     function getUserId() {
         return localStorage.getItem('userId');
     }
