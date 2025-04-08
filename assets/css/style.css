@@ -29,6 +29,12 @@ body {
   z-index: 1000;
 }
 
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .navbar .logo {
   font-weight: bold;
   font-size: 24px;
@@ -55,6 +61,13 @@ body {
 .navbar .nav-links li a.active {
   background-color: var(--primary-color);
   color: white;
+}
+
+/* 漢堡選單樣式 */
+.hamburger {
+  font-size: 26px;
+  cursor: pointer;
+  display: none;
 }
 
 /* ========= Hero 區塊 ========= */
@@ -275,11 +288,27 @@ footer .copyright {
 }
 
 /* ========= 響應式 ========= */
-@media (max-width: 600px) {
-  .navbar .nav-links {
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
     flex-direction: column;
-    gap: 10px;
+    background-color: var(--primary-color);
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    padding: 20px 0;
+    z-index: 999;
   }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .hamburger {
+    display: block;
+  }
+}
 
   .footer-content {
     flex-direction: column;
