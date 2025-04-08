@@ -1,218 +1,157 @@
-/* 基本字體與背景 */
+/* ========= 全域 ========= */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background-color: #f9f9f9;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  margin: 0;
 }
 
-/* 導覽列樣式 */
-.navbar {
-    background-color: #333;
-    padding: 15px;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.navbar .logo {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.navbar .nav-links {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-    margin: 0;
-    padding: 0;
-}
-
-.navbar .nav-links li a {
-    color: white;
-    text-decoration: none;
-    padding: 5px 10px;
-    transition: background-color 0.3s;
-}
-
-.navbar .nav-links li a:hover,
-.navbar .nav-links li a.active {
-    background-color: #555;
-    border-radius: 5px;
-}
-
-/* 首頁橫幅 */
-.hero {
-    text-align: center;
-    padding: 80px 20px;
-    background-color: #007bff;
-    color: white;
-}
-
-.hero button {
-    margin-top: 20px;
-    padding: 12px 24px;
-    font-size: 16px;
-    background-color: #fff;
-    color: #007bff;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.hero button:hover {
-    background-color: #e0e0e0;
-}
-
-/* 卡片區塊（套餐、訂單） */
-.plan-card, .order-card {
-    border: 1px solid #ddd;
-    margin: 15px;
-    padding: 20px;
-    border-radius: 8px;
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-}
-
-/* 通用按鈕樣式 */
-button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 18px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-button.disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
-/* 彈窗區域 */
+/* ========= 彈窗遮罩 ========= */
 .modal {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.4);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
 }
 
+/* ========= 彈窗內容區塊 ========= */
 .modal-content {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    width: 100%;
-    max-width: 420px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    position: relative;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  position: relative;
 }
 
 .modal-content h2 {
-    margin-bottom: 20px;
-    font-size: 24px;
-    text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  text-align: center;
 }
 
 .modal-content form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .modal-content input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    width: 100%;
-    font-size: 16px;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s;
 }
 
-.modal-content .form-group {
-    display: flex;
-    gap: 10px;
-    align-items: center;
+.modal-content input:focus {
+  border-color: #007bff;
 }
 
-.modal-content .form-group input {
-    flex: 1;
+/* ========= 驗證碼與按鈕並排區 ========= */
+.form-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.form-group input {
+  flex: 1;
+}
+
+/* ========= 按鈕樣式 ========= */
+.btn {
+  background-color: #007bff;
+  color: white;
+  padding: 12px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn:hover {
+  background-color: #0056b3;
 }
 
 .btn-outline {
-    background-color: white;
-    border: 1px solid #007bff;
-    color: #007bff;
-    padding: 8px 14px;
-    border-radius: 6px;
+  background-color: white;
+  color: #007bff;
+  border: 1px solid #007bff;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s;
 }
 
 .btn-outline:hover {
-    background-color: #f0f8ff;
+  background-color: #e6f0ff;
 }
 
-#close-modal {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background: transparent;
-    border: none;
-    font-size: 22px;
-    font-weight: bold;
-    cursor: pointer;
-    color: #888;
-}
-
-.hidden {
-    display: none;
-}
-
+/* ========= 註冊 / 登入切換連結 ========= */
 .link {
-    color: #007bff;
-    cursor: pointer;
-    text-decoration: underline;
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .link:hover {
-    color: #0056b3;
+  color: #0056b3;
 }
 
-/* ✅ 手機響應式支援 */
+.switch-text {
+  font-size: 14px;
+  text-align: center;
+  color: #666;
+}
+
+/* ========= 關閉按鈕 ========= */
+.close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #aaa;
+}
+
+.close-btn:hover {
+  color: #555;
+}
+
+/* ========= 隱藏用 ========= */
+.hidden {
+  display: none;
+}
+
+/* ========= 鎖定驗證碼按鈕樣式 ========= */
+.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* ========= 響應式手機支援 ========= */
 @media (max-width: 600px) {
-    .navbar {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+  .form-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-    .navbar .nav-links {
-        flex-direction: column;
-        width: 100%;
-        gap: 10px;
-    }
+  .form-group button {
+    width: 100%;
+  }
 
-    .hero {
-        padding: 40px 20px;
-    }
-
-    .modal-content {
-        width: 90%;
-        padding: 20px;
-    }
-
-    .modal-content .form-group {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .modal-content .form-group button {
-        width: 100%;
-    }
+  .modal-content {
+    padding: 20px;
+  }
 }
