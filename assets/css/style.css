@@ -65,7 +65,7 @@ body {
     background-color: #e0e0e0;
 }
 
-/* 套餐卡片 */
+/* 卡片區塊（套餐、訂單） */
 .plan-card, .order-card {
     border: 1px solid #ddd;
     margin: 15px;
@@ -75,7 +75,7 @@ body {
     box-shadow: 0 4px 8px rgba(0,0,0,0.05);
 }
 
-/* 所有按鈕統一樣式 */
+/* 通用按鈕樣式 */
 button {
     background-color: #007bff;
     color: white;
@@ -90,7 +90,12 @@ button:hover {
     background-color: #0056b3;
 }
 
-/* ===== 彈窗樣式 ===== */
+button.disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* 彈窗區域 */
 .modal {
     position: fixed;
     top: 0; left: 0;
@@ -142,6 +147,18 @@ button:hover {
     flex: 1;
 }
 
+.btn-outline {
+    background-color: white;
+    border: 1px solid #007bff;
+    color: #007bff;
+    padding: 8px 14px;
+    border-radius: 6px;
+}
+
+.btn-outline:hover {
+    background-color: #f0f8ff;
+}
+
 #close-modal {
     position: absolute;
     top: 12px;
@@ -154,12 +171,10 @@ button:hover {
     color: #888;
 }
 
-/* 隱藏元素 */
 .hidden {
     display: none;
 }
 
-/* 點擊切換連結樣式 */
 .link {
     color: #007bff;
     cursor: pointer;
@@ -169,7 +184,8 @@ button:hover {
 .link:hover {
     color: #0056b3;
 }
-/* 手機響應式支援 */
+
+/* ✅ 手機響應式支援 */
 @media (max-width: 600px) {
     .navbar {
         flex-direction: column;
