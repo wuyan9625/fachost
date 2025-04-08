@@ -1,29 +1,57 @@
 document.addEventListener('DOMContentLoaded', function () {
 
+    // ========= 動態插入 NAV 導覽列 =========
+    const navbarHTML = `
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">Fachost</div>
+            <div class="hamburger" id="hamburger">&#9776;</div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html" class="active">首頁</a></li>
+                <li><a href="plans.html">套餐</a></li>
+                <li><a href="orders.html">訂單查詢</a></li>
+                <li><a href="console.html">控制台</a></li>
+                <li><a href="#" id="login-btn">登入</a></li>
+                <li><a href="#" id="register-btn">註冊</a></li>
+            </ul>
+        </div>
+    </nav>
+    `;
+    const navbarContainer = document.createElement('div');
+    navbarContainer.innerHTML = navbarHTML;
+    document.body.insertBefore(navbarContainer, document.body.firstChild);
+
+    // ========= 響應式 漢堡選單 =========
+    document.getElementById('hamburger').addEventListener('click', () => {
+        document.getElementById('nav-links').classList.toggle('active');
+    });
+
     // ========= 切換登入註冊 =========
-    document.getElementById('switch-to-register').addEventListener('click', () => {
-        document.getElementById('login-form-container').classList.add('hidden');
-        document.getElementById('register-form-container').classList.remove('hidden');
+    document.addEventListener('click', (e) => {
+        if (e.target.id === 'switch-to-register') {
+            document.getElementById('login-form-container').classList.add('hidden');
+            document.getElementById('register-form-container').classList.remove('hidden');
+        }
+        if (e.target.id === 'switch-to-login') {
+            document.getElementById('register-form-container').classList.add('hidden');
+            document.getElementById('login-form-container').classList.remove('hidden');
+        }
     });
 
-    document.getElementById('switch-to-login').addEventListener('click', () => {
-        document.getElementById('register-form-container').classList.add('hidden');
-        document.getElementById('login-form-container').classList.remove('hidden');
+    document.addEventListener('click', (e) => {
+        if (e.target.id === 'login-btn') {
+            document.getElementById('auth-modal').classList.remove('hidden');
+            document.getElementById('login-form-container').classList.remove('hidden');
+            document.getElementById('register-form-container').classList.add('hidden');
+        }
+        if (e.target.id === 'register-btn') {
+            document.getElementById('auth-modal').classList.remove('hidden');
+            document.getElementById('register-form-container').classList.remove('hidden');
+            document.getElementById('login-form-container').classList.add('hidden');
+        }
     });
 
-    document.getElementById('login-btn').addEventListener('click', () => {
-        document.getElementById('auth-modal').classList.remove('hidden');
-        document.getElementById('login-form-container').classList.remove('hidden');
-        document.getElementById('register-form-container').classList.add('hidden');
-    });
-
-    document.getElementById('register-btn').addEventListener('click', () => {
-        document.getElementById('auth-modal').classList.remove('hidden');
-        document.getElementById('register-form-container').classList.remove('hidden');
-        document.getElementById('login-form-container').classList.add('hidden');
-    });
-
-    document.getElementById('close-modal').addEventListener('click', () => {
+    document.getElementById('close-modal')?.addEventListener('click', () => {
         document.getElementById('auth-modal').classList.add('hidden');
     });
 
