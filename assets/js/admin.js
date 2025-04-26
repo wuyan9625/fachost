@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
             };
 
             try {
-                const response = await fetch('https://api.fachost.cloud/api/api/vps/create-plan', {
+                const response = await fetch('https://api.fachost.cloud/api/vps/create-plan', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(planData)
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
             };
 
             try {
-                const response = await fetch(`https://api.fachost.cloud/api/api/vps/update-plan/${planId}`, {
+                const response = await fetch(`https://api.fachost.cloud/api/vps/update-plan/${planId}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(updateData)
