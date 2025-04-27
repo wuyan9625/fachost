@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const planListDiv = document.getElementById('plan-list');
             if (!planListDiv) return;
 
-            data.plans.forEach(plan => {
+            data.forEach(plan => {
                 const planDiv = document.createElement('div');
                 planDiv.classList.add('plan-item');
                 planDiv.setAttribute('data-plan-id', plan.id);
