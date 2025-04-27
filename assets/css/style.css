@@ -286,7 +286,58 @@ footer .copyright {
   font-size: 12px;
   opacity: 0.8;
 }
+/* ========= 套餐 ========= */
+#plan-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
 
+.plan-item {
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
+}
+
+.plan-item:hover {
+    transform: translateY(-5px);
+}
+
+.plan-item h3 {
+    margin-top: 0;
+    color: #006b55; /* 綠色標題 */
+    font-size: 20px;
+}
+
+.plan-item p {
+    margin: 8px 0;
+    font-size: 16px;
+}
+
+.plan-item .available-vps {
+    font-weight: bold;
+    color: #007b5a;
+}
+
+.plan-item button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #007b5a;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.plan-item button:hover {
+    background-color: #005f48;
+}
 /* ========= 響應式 ========= */
 @media (max-width: 768px) {
   .nav-links {
