@@ -218,11 +218,17 @@ document.addEventListener('DOMContentLoaded', function () {
     async function fetchPlans() {
         try {
             const response = await fetch('https://api.fachost.cloud/api/vps/get-plans');
+            console.log("API 回應：", response);
             const data = await response.json();
-            const planListDiv = document.getElementById('plan-list');
-            if (!planListDiv) return;
+            console.log("取得的套餐資料：", data);
     
-            planListDiv.innerHTML = ''; // 刷新前清空
+            const planListDiv = document.getElementById('plan-list');
+            if (!planListDiv) {
+                console.error("找不到 plan-list 的 div");
+                return;
+            }
+    
+            planListDiv.innerHTML = ''; // 清空舊的
     
             data.forEach(plan => {
                 const planDiv = document.createElement('div');
@@ -231,18 +237,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 planDiv.innerHTML = `
                     <h3>${plan.name}</h3>
                     <p>描述：${plan.description}</p>
-                    <p>價格：${plan.price} 元</p>
+                    <p>價格：${plan.price}</p>
                     <p>總量：${plan.total_vps}</p>
                     <p class="available-vps">可用：${plan.available_vps}</p>
                     <button onclick="purchaseVps(${plan.id})">購買</button>
                 `;
                 planListDiv.appendChild(planDiv);
             });
-    
         } catch (error) {
             console.error("獲取套餐失敗：", error);
         }
     }
+
 
 
     fetchPlans();
