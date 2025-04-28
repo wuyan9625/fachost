@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    // ========= 導覽列 =========
+    // ========= 動態插入 NAV 導覽列 =========
     const navbarHTML = `
     <nav class="navbar">
         <div class="navbar-container">
@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <li><a href="console.html">控制台</a></li>
                 <li><a href="#" id="login-btn">登入</a></li>
                 <li><a href="#" id="register-btn">註冊</a></li>
+                <li><a href="#" id="logout-btn" class="hidden">登出</a></li>
             </ul>
         </div>
     </nav>
@@ -26,7 +27,30 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('nav-links').classList.toggle('active');
     });
 
-    // ========= 彈窗切換 =========
+    // ========= 根據登入狀態切換登入/登出按鈕 =========
+    const token = localStorage.getItem('token');
+    const loginBtn = document.getElementById('login-btn');
+    const registerBtn = document.getElementById('register-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    if (token) {
+        loginBtn.classList.add('hidden');
+        registerBtn.classList.add('hidden');
+        logoutBtn.classList.remove('hidden');
+    } else {
+        loginBtn.classList.remove('hidden');
+        registerBtn.classList.remove('hidden');
+        logoutBtn.classList.add('hidden');
+    }
+
+    // ========= 登出功能 =========
+    logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        window.location.href = 'index.html';
+    });
+
+    // ========= 彈窗切換登入/註冊/忘記密碼 =========
     document.addEventListener('click', (e) => {
         if (e.target.id === 'switch-to-register') {
             document.getElementById('login-form-container').classList.add('hidden');
@@ -48,6 +72,25 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('close-modal')?.addEventListener('click', () => {
         document.getElementById('auth-modal').classList.add('hidden');
     });
+
+    // ========= 註冊發送驗證碼倒數 =========
+    function startCountdown(button, seconds = 60) {
+        button.disabled = true;
+        button.classList.add('disabled');
+        let remaining = seconds;
+        button.textContent = `重新發送 (${remaining})`;
+
+        const interval = setInterval(() => {
+            remaining--;
+            button.textContent = `重新發送 (${remaining})`;
+            if (remaining <= 0) {
+                clearInterval(interval);
+                button.disabled = false;
+                button.classList.remove('disabled');
+                button.textContent = '發送驗證碼';
+            }
+        }, 1000);
+    }
 
     // ========= 登入提交 =========
     const loginForm = document.getElementById('login-form');
@@ -76,25 +119,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert('登入失敗，請稍後再試');
             }
         });
-    }
-
-    // ========= 註冊發送驗證碼倒數 =========
-    function startCountdown(button, seconds = 60) {
-        button.disabled = true;
-        button.classList.add('disabled');
-        let remaining = seconds;
-        button.textContent = `重新發送 (${remaining})`;
-
-        const interval = setInterval(() => {
-            remaining--;
-            button.textContent = `重新發送 (${remaining})`;
-            if (remaining <= 0) {
-                clearInterval(interval);
-                button.disabled = false;
-                button.classList.remove('disabled');
-                button.textContent = '發送驗證碼';
-            }
-        }, 1000);
     }
 
     // ========= 註冊發送驗證碼 =========
