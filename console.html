@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,22 +8,134 @@
 </head>
 <body>
 
-    <!-- 導覽列 -->
-    <header>
-        <div id="navbar-container"></div>
-    </header>
+<!-- 動態導覽列由 auth.js 插入 -->
 
-    <main>
-        <h1>我的 VPS 小雞</h1>
-        <div id="vps-list" class="vps-container">
-            <!-- 這裡由 main.js 動態載入 -->
+<main class="main-container">
+    <h2>我的 VPS 控制台</h2>
+
+    <div id="vps-list" class="vps-list">
+        <!-- JS 會動態載入使用者的 VPS清單 -->
+    </div>
+</main>
+
+<!-- 登入/註冊/忘記密碼的 Modal -->
+<div id="auth-modal" class="modal hidden">
+    <div class="modal-content">
+        <span id="close-modal" class="close-button">&times;</span>
+
+        <!-- 登入表單 -->
+        <div id="login-form-container">
+            <h3>登入</h3>
+            <form id="login-form">
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="密碼" required>
+                <button type="submit">登入</button>
+            </form>
+            <p><a href="#" id="forgot-password-btn">忘記密碼？</a></p>
+            <p>還沒有帳號？<a href="#" id="switch-to-register">註冊</a></p>
         </div>
-    </main>
 
-    <div id="footer-container"></div
-                                   
-    <script src="assets/js/auth.js"></script>
-    <script src="assets/js/console.js"></script>
-    <script src="assets/js/footer.js"></script>
+        <!-- 註冊表單 -->
+        <div id="register-form-container" class="hidden">
+            <h3>註冊</h3>
+            <form id="register-form">
+                <input type="email" id="register-email" placeholder="Email" required>
+                <input type="password" id="register-password" placeholder="密碼" required>
+                <input type="password" id="register-confirm-password" placeholder="確認密碼" required>
+                <input type="text" id="register-code" placeholder="驗證碼" required>
+                <button id="send-code-btn" type="button">發送驗證碼</button>
+                <button type="submit">註冊</button>
+            </form>
+            <p>已有帳號？<a href="#" id="switch-to-login">登入</a></p>
+        </div>
+
+        <!-- 忘記密碼表單 -->
+        <div id="forgot-password-form-container" class="hidden">
+            <h3>重設密碼</h3>
+            <form id="forgot-password-form">
+                <input type="email" id="forgot-email" placeholder="Email" required>
+                <input type="text" id="forgot-code" placeholder="驗證碼" required>
+                <input type="password" id="new-password" placeholder="新密碼" required>
+                <input type="password" id="new-confirm-password" placeholder="確認新密碼" required>
+                <button id="send-forgot-code-btn" type="button">發送驗證碼</button>
+                <button type="submit">重設密碼</button>
+            </form>
+            <p><a href="#" id="switch-to-login">回登入</a></p>
+        </div>
+
+    </div>
+</div>
+
+<!-- 統一引入的JS -->
+<script src="assets/js/auth.js"></script>
+
+<script>
+// ========= 顯示個人VPS清單 =========
+document.addEventListener('DOMContentLoaded', async function () {
+    const vpsList = document.getElementById('vps-list');
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        alert('請先登入！');
+        window.location.href = 'index.html';
+        return;
+    }
+
+    try {
+        const response = await fetch('https://api.fachost.cloud/api/vps/my-vps', {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await response.json();
+
+        if (data.vps_list.length === 0) {
+            vpsList.innerHTML = '<p>目前沒有已購買的VPS</p>';
+            return;
+        }
+
+        data.vps_list.forEach(vps => {
+            const vpsCard = document.createElement('div');
+            vpsCard.classList.add('vps-card');
+            vpsCard.innerHTML = `
+                <h4>VPS #${vps.id}</h4>
+                <p>IP地址：${vps.ip_address}</p>
+                <p>狀態：${vps.status}</p>
+                <p>到期日：${vps.expire_date}</p>
+                <button onclick="refreshIP(${vps.id})">刷新 IP</button>
+            `;
+            vpsList.appendChild(vpsCard);
+        });
+    } catch (error) {
+        console.error("獲取VPS失敗：", error);
+    }
+});
+
+// ========= 讓使用者手動刷新 IP（按小雞的刷新按鈕） =========
+async function refreshIP(vpsId) {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        alert('請先登入');
+        return;
+    }
+
+    try {
+        const response = await fetch(`https://api.fachost.cloud/api/vps/refresh-ip/${vpsId}`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await response.json();
+        if (data.message === "IP刷新成功") {
+            alert('刷新成功，新IP已分配！');
+            window.location.reload();
+        } else {
+            alert('刷新失敗：' + data.message);
+        }
+    } catch (error) {
+        alert('刷新錯誤：' + error.message);
+    }
+}
+</script>
+
 </body>
 </html>
