@@ -1,24 +1,28 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>订单查询</title>
+    <title>訂單查詢 - Fachost</title>
     <link rel="stylesheet" href="assets/css/style.css">
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/footer.js"></script>
 </head>
 <body>
+
+    <!-- 導覽列 -->
     <header>
         <div id="navbar-container"></div>
     </header>
 
-    <div id="orders-container">
-        <h2>我的订单</h2>
-        <div id="orders-list"></div>
-    </div>
-    
+    <main>
+        <h1>我的訂單記錄</h1>
+        <div id="order-list" class="orders-container">
+            <!-- 這裡由 main.js 自動載入訂單 -->
+        </div>
+    </main>
+
     <div id="footer-container"></div>
+
+    <script src="assets/js/main.js"></script>
 
 </body>
 </html>
