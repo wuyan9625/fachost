@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,25 +8,23 @@
 </head>
 <body>
 
-    <!-- 導覽列會動態插入 -->
-    <header>
-        <div id="navbar-container"></div>
-    </header>
+    <!-- 導覽列由 auth.js 動態插入 -->
 
     <main>
-        <section class="hero">
+        <section>
             <h1>歡迎來到 Fachost</h1>
-            <p>穩定高速的VPS撥號服務，讓你的連線永不斷線。</p>
-            <a href="plans.html" class="btn">查看套餐</a>
+            <p>快速、可靠、安全的 VPS 解決方案。</p>
+            <a href="plans.html">
+                <button>查看套餐</button>
+            </a>
         </section>
     </main>
 
-    <!-- 登入註冊Modal -->
-    <div id="auth-modal" class="modal hidden">
+    <!-- 彈窗（登入/註冊/忘記密碼） -->
+    <div id="auth-modal" class="hidden">
         <div class="modal-content">
-            <span id="close-modal" class="close">&times;</span>
+            <span id="close-modal">&times;</span>
 
-            <!-- 登入表單 -->
             <div id="login-form-container">
                 <h2>登入</h2>
                 <form id="login-form">
@@ -38,13 +36,12 @@
                 <p>沒有帳號？<a href="#" id="switch-to-register">註冊</a></p>
             </div>
 
-            <!-- 註冊表單 -->
             <div id="register-form-container" class="hidden">
                 <h2>註冊</h2>
                 <form id="register-form">
                     <input type="email" id="register-email" placeholder="Email" required>
-                    <input type="password" id="register-password" placeholder="設定密碼" required>
-                    <input type="password" id="register-confirm-password" placeholder="再次輸入密碼" required>
+                    <input type="password" id="register-password" placeholder="密碼" required>
+                    <input type="password" id="register-confirm-password" placeholder="確認密碼" required>
                     <input type="text" id="register-code" placeholder="驗證碼" required>
                     <button type="button" id="send-code-btn">發送驗證碼</button>
                     <button type="submit">註冊</button>
@@ -52,27 +49,24 @@
                 <p>已有帳號？<a href="#" id="switch-to-login">登入</a></p>
             </div>
 
-            <!-- 忘記密碼表單 -->
             <div id="forgot-password-form-container" class="hidden">
                 <h2>重設密碼</h2>
                 <form id="forgot-password-form">
-                    <input type="email" id="forgot-email" placeholder="註冊時的Email" required>
+                    <input type="email" id="forgot-email" placeholder="Email" required>
                     <input type="text" id="forgot-code" placeholder="驗證碼" required>
                     <input type="password" id="new-password" placeholder="新密碼" required>
-                    <input type="password" id="new-confirm-password" placeholder="再次輸入新密碼" required>
+                    <input type="password" id="new-confirm-password" placeholder="確認新密碼" required>
                     <button type="button" id="send-forgot-code-btn">發送驗證碼</button>
                     <button type="submit">重設密碼</button>
                 </form>
-                <p><a href="#" id="switch-to-login">返回登入</a></p>
+                <p><a href="#" id="switch-to-login">回到登入</a></p>
             </div>
-
         </div>
     </div>
 
-    <!-- Footer -->
     <div id="footer-container"></div>
+
     <script src="assets/js/auth.js"></script>
-    <script src="assets/js/footer.js"></script>
 
 </body>
 </html>
