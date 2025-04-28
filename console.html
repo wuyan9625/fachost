@@ -1,22 +1,28 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VPS 控制台</title>
+    <title>控制台 - Fachost</title>
     <link rel="stylesheet" href="assets/css/style.css">
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/footer.js"></script>
 </head>
 <body>
-    <div id="navbar-container"></div>
 
-    <div id="vps-info">
-        <h2>我的 VPS 信息</h2>
-        <div id="vps-details"></div>
-        <button id="refresh-ip-btn">刷新我的 IP</button>
-    </div>
+    <!-- 導覽列 -->
+    <header>
+        <div id="navbar-container"></div>
+    </header>
+
+    <main>
+        <h1>我的 VPS 小雞</h1>
+        <div id="vps-list" class="vps-container">
+            <!-- 這裡由 main.js 動態載入 -->
+        </div>
+    </main>
+
     <div id="footer-container"></div>
+
+    <script src="assets/js/main.js"></script>
 
 </body>
 </html>
