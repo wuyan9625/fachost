@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('nav-links').classList.toggle('active');
     });
 
-    // ========= 根據登入狀態切換登入/登出按鈕 =========
+    // ========= 根據登入狀態切換按鈕 =========
     const token = localStorage.getItem('token');
     const loginBtn = document.getElementById('login-btn');
     const registerBtn = document.getElementById('register-btn');
@@ -43,14 +43,25 @@ document.addEventListener('DOMContentLoaded', function () {
         logoutBtn.classList.add('hidden');
     }
 
-    // ========= 登出功能 =========
-    logoutBtn.addEventListener('click', () => {
+    logoutBtn?.addEventListener('click', () => {
         localStorage.removeItem('token');
         localStorage.removeItem('userId');
         window.location.href = 'index.html';
     });
 
-    // ========= 彈窗切換登入/註冊/忘記密碼 =========
+    // ========= 插入 Footer 頁腳 =========
+    const footerHTML = `
+    <footer class="footer">
+        <div class="footer-container">
+            <p>© 2025 Fachost. All rights reserved.</p>
+        </div>
+    </footer>
+    `;
+    const footerContainer = document.createElement('div');
+    footerContainer.innerHTML = footerHTML;
+    document.body.appendChild(footerContainer);
+
+    // ========= 彈窗切換（登入/註冊/忘記密碼） =========
     document.addEventListener('click', (e) => {
         if (e.target.id === 'switch-to-register') {
             document.getElementById('login-form-container').classList.add('hidden');
@@ -73,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('auth-modal').classList.add('hidden');
     });
 
-    // ========= 註冊發送驗證碼倒數 =========
+    // ========= 倒數鎖定驗證碼按鈕 =========
     function startCountdown(button, seconds = 60) {
         button.disabled = true;
         button.classList.add('disabled');
@@ -234,16 +245,6 @@ document.addEventListener('DOMContentLoaded', function () {
             } catch (error) {
                 alert('重設密碼失敗，請稍後再試');
             }
-        });
-    }
-
-    // ========= 登出 =========
-    const logoutBtn = document.getElementById('logout-btn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', function () {
-            localStorage.removeItem('userId');
-            localStorage.removeItem('token');
-            window.location.href = 'index.html';
         });
     }
 
