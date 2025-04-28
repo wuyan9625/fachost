@@ -224,9 +224,3 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 });
-function calculateTotalWithFee(price) {
-    const fixedFee = 0.3; // PayPal固定費用
-    const rate = 0.029;   // PayPal百分比費用
-    const total = (price + fixedFee) / (1 - rate);
-    return total.toFixed(2); // 保留2位小數
-}
