@@ -1,54 +1,78 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fachost - 高性能云主机</title>
+    <title>Fachost - 首頁</title>
     <link rel="stylesheet" href="assets/css/style.css">
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/footer.js"></script>
 </head>
 <body>
-    <div id="navbar-container"></div>
-    <header class="hero">
-        <h1>高性能、安全稳定的云主机服务</h1>
-        <p>Fachost 提供全球高速节点，弹性扩充，价格透明。</p>
-        <button id="register-btn">立即注册</button>
+
+    <!-- 導覽列會動態插入 -->
+    <header>
+        <div id="navbar-container"></div>
     </header>
 
+    <main>
+        <section class="hero">
+            <h1>歡迎來到 Fachost</h1>
+            <p>穩定高速的VPS撥號服務，讓你的連線永不斷線。</p>
+            <a href="plans.html" class="btn">查看套餐</a>
+        </section>
+    </main>
+
+    <!-- 登入註冊Modal -->
     <div id="auth-modal" class="modal hidden">
-    <div class="modal-content">
-        <!-- 登入 -->
-        <div id="login-form-container">
-            <h2>登入</h2>
-            <form id="login-form">
-                <input type="email" id="login-email" placeholder="📧 輸入 Email" required>
-                <input type="password" id="login-password" placeholder="🔒 輸入密碼" required>
-                <button type="submit" class="btn">登入</button>
-                <p class="switch-text">還沒有帳號？<span id="switch-to-register" class="link">註冊</span></p>
-            </form>
+        <div class="modal-content">
+            <span id="close-modal" class="close">&times;</span>
+
+            <!-- 登入表單 -->
+            <div id="login-form-container">
+                <h2>登入</h2>
+                <form id="login-form">
+                    <input type="email" id="login-email" placeholder="Email" required>
+                    <input type="password" id="login-password" placeholder="密碼" required>
+                    <button type="submit">登入</button>
+                </form>
+                <p><a href="#" id="forgot-password-btn">忘記密碼？</a></p>
+                <p>沒有帳號？<a href="#" id="switch-to-register">註冊</a></p>
+            </div>
+
+            <!-- 註冊表單 -->
+            <div id="register-form-container" class="hidden">
+                <h2>註冊</h2>
+                <form id="register-form">
+                    <input type="email" id="register-email" placeholder="Email" required>
+                    <input type="password" id="register-password" placeholder="設定密碼" required>
+                    <input type="password" id="register-confirm-password" placeholder="再次輸入密碼" required>
+                    <input type="text" id="register-code" placeholder="驗證碼" required>
+                    <button type="button" id="send-code-btn">發送驗證碼</button>
+                    <button type="submit">註冊</button>
+                </form>
+                <p>已有帳號？<a href="#" id="switch-to-login">登入</a></p>
+            </div>
+
+            <!-- 忘記密碼表單 -->
+            <div id="forgot-password-form-container" class="hidden">
+                <h2>重設密碼</h2>
+                <form id="forgot-password-form">
+                    <input type="email" id="forgot-email" placeholder="註冊時的Email" required>
+                    <input type="text" id="forgot-code" placeholder="驗證碼" required>
+                    <input type="password" id="new-password" placeholder="新密碼" required>
+                    <input type="password" id="new-confirm-password" placeholder="再次輸入新密碼" required>
+                    <button type="button" id="send-forgot-code-btn">發送驗證碼</button>
+                    <button type="submit">重設密碼</button>
+                </form>
+                <p><a href="#" id="switch-to-login">返回登入</a></p>
+            </div>
+
         </div>
-
-        <!-- 註冊 -->
-        <div id="register-form-container" class="hidden">
-            <h2>註冊</h2>
-            <form id="register-form">
-                <input type="email" id="register-email" placeholder="📧 輸入 Email" required>
-
-                <div class="form-group">
-                    <input type="text" id="register-code" placeholder="🔑 驗證碼" required>
-                    <button type="button" id="send-code-btn" class="btn-outline">發送驗證碼</button>
-                </div>
-
-                <input type="password" id="register-password" placeholder="🔒 輸入密碼" required>
-                <button type="submit" class="btn">註冊</button>
-                <p class="switch-text">已有帳號？<span id="switch-to-login" class="link">登入</span></p>
-            </form>
-        </div>
-
-        <button id="close-modal" class="close-btn">✖</button>
     </div>
-</div>
+
+    <!-- Footer -->
     <div id="footer-container"></div>
+
+    <script src="assets/js/main.js"></script>
+
 </body>
 </html>
