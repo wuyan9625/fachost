@@ -3,23 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fachost - 套餐方案</title>
+    <title>購買套餐 - Fachost</title>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
-    <!-- 導覽列由 auth.js 自動插入 -->
+<!-- 動態導覽列由 auth.js 插入 -->
 
-    <main>
-        <h1>選擇你的專屬套餐</h1>
-        <div id="plan-list">
-            <!-- 套餐列表將由 JS 動態渲染 -->
+<main class="main-container">
+    <h2>選擇一個適合你的套餐</h2>
+
+    <div id="plan-list" class="plan-list">
+        <!-- JS動態載入套餐清單 -->
+    </div>
+</main>
+
+<!-- 登入/註冊/忘記密碼 Modal -->
+<div id="auth-modal" class="modal hidden">
+    <div class="modal-content">
+        <span id="close-modal" class="close-button">&times;</span>
+
+        <!-- 登入表單 -->
+        <div id="login-form-container">
+            <h3>登入</h3>
+            <form id="login-form">
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="密碼" required>
+                <button type="submit">登入</button>
+            </form>
+            <p><a href="#" id="forgot-password-btn">忘記密碼？</a></p>
+            <p>還沒有帳號？<a href="#" id="switch-to-register">註冊</a></p>
         </div>
-    </main>
 
-    <div id="footer-container"></div>
+        <!-- 註冊表單 -->
+        <div id="register-form-container" class="hidden">
+            <h3>註冊</h3>
+            <form id="register-form">
+                <input type="email" id="register-email" placeholder="Email" required>
+                <input type="password" id="register-password" placeholder="密碼" required>
+                <input type="password" id="register-confirm-password" placeholder="確認密碼" required>
+                <input type="text" id="register-code" placeholder="驗證碼" required>
+                <button id="send-code-btn" type="button">發送驗證碼</button>
+                <button type="submit">註冊</button>
+            </form>
+            <p>已有帳號？<a href="#" id="switch-to-login">登入</a></p>
+        </div>
 
-    <script src="assets/js/auth.js"></script>
+        <!-- 忘記密碼表單 -->
+        <div id="forgot-password-form-container" class="hidden">
+            <h3>重設密碼</h3>
+            <form id="forgot-password-form">
+                <input type="email" id="forgot-email" placeholder="Email" required>
+                <input type="text" id="forgot-code" placeholder="驗證碼" required>
+                <input type="password" id="new-password" placeholder="新密碼" required>
+                <input type="password" id="new-confirm-password" placeholder="確認新密碼" required>
+                <button id="send-forgot-code-btn" type="button">發送驗證碼</button>
+                <button type="submit">重設密碼</button>
+            </form>
+            <p><a href="#" id="switch-to-login">回登入</a></p>
+        </div>
+
+    </div>
+</div>
+
+<!-- 統一引入的JS -->
+<script src="assets/js/auth.js"></script>
+
+<script>
+// ========= 顯示所有套餐 =========
+document.addEventListener('DOMContentLoaded', async function () {
+    const planListDiv = document.getElementById('plan-list');
+
+    try {
+        const response = await fetch('https://api.fachost.cloud/api/vps/get-plans');
+        const data = await response.json();
+
+        if (data.plans.length === 0) {
+            planListDiv.innerHTML = '<p>目前沒有可購買的套餐</p>';
+            return;
+        }
+
+        data.plans.forEach(plan => {
+            const planDiv = document.createElement('div');
+            planDiv.classList.add('plan-card');
+            planDiv.innerHTML = `
+                <h3>${plan.name}</h3>
+                <p>描述：${plan.description}</p>
+                <p>價格：${plan.price} 元</p>
+                <p>期限：${plan.duration}</p>
+                <p>總量：${plan.total_vps}</p>
+                <p>可用：${plan.available_vps}</p>
+                <button onclick="purchaseVps(${plan.id})">立即購買</button>
+            `;
+            planListDiv.appendChild(planDiv);
+        });
+    } catch (error) {
+        console.error("獲取套餐失敗：", error);
+        planListDiv.innerHTML = '<p>無法加載套餐，請稍後再試。</p>';
+    }
+});
+
+// ========= 購買 VPS =========
+async function purchaseVps(planId) {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        alert('請先登入');
+        return;
+    }
+
+    try {
+        const response = await fetch('https://api.fachost.cloud/api/vps/create-vps', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ plan_id: planId })
+        });
+        const data = await response.json();
+        if (data.message === "VPS 创建成功") {
+            alert('購買成功！');
+            window.location.href = 'console.html';
+        } else {
+            alert('購買失敗：' + data.message);
+        }
+    } catch (error) {
+        alert('購買錯誤：' + error.message);
+    }
+}
+</script>
 
 </body>
 </html>
