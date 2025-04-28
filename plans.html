@@ -1,27 +1,28 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>套餐</title>
+    <title>套餐列表 - Fachost</title>
     <link rel="stylesheet" href="assets/css/style.css">
-    <script src="assets/js/main.js"></script>
-    <script src="assets/js/footer.js"></script>
 </head>
 <body>
+
+    <!-- 導覽列 -->
     <header>
         <div id="navbar-container"></div>
     </header>
 
     <main>
-        <h2>选择套餐</h2>
-
-        <div id="plan-list">
-            <!-- 套餐列表会动态加载在这里 -->
+        <h1>選擇你的套餐</h1>
+        <div id="plan-list" class="plans-container">
+            <!-- 這裡由 main.js fetch API 自動生成 -->
         </div>
     </main>
-    
+
     <div id="footer-container"></div>
+
+    <script src="assets/js/main.js"></script>
 
 </body>
 </html>
