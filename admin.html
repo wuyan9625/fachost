@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理員後台 - Fachost</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- 導覽列 -->
+    <header>
+        <div id="navbar-container"></div>
+    </header>
+
+    <main>
+        <h1>管理員 - 套餐管理</h1>
+
+        <!-- 創建套餐表單 -->
+        <section class="admin-section">
+            <h2>新增套餐</h2>
+            <form id="create-plan-form">
+                <input type="text" id="plan-name" placeholder="套餐名稱" required>
+                <input type="text" id="plan-description" placeholder="套餐描述">
+                <input type="number" id="plan-price" placeholder="套餐價格" required>
+                <select id="plan-duration" required>
+                    <option value="monthly">月度</option>
+                    <option value="quarterly">季度</option>
+                    <option value="yearly">年度</option>
+                </select>
+                <input type="number" id="plan-total-vps" placeholder="套餐總量" required>
+                <button type="submit">創建套餐</button>
+            </form>
+        </section>
+
+        <!-- 更新套餐表單 -->
+        <section class="admin-section">
+            <h2>更新套餐</h2>
+            <form id="update-plan-form">
+                <input type="number" id="plan-id" placeholder="套餐ID" required>
+                <input type="number" id="new-price" placeholder="新價格" required>
+                <input type="number" id="new-total-vps" placeholder="新總量" required>
+                <button type="submit">更新套餐</button>
+            </form>
+        </section>
+
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script src="assets/js/main.js"></script>
+
+</body>
+</html>
