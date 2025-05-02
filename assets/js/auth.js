@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const password = document.getElementById('login-password').value;
 
             try {
-                const response = await fetch('https://api.fachost.cloud/api/auth/login', {
+                const response = await fetch('https://fachost.cloud/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
